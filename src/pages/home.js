@@ -74,6 +74,12 @@ function Home() {
   const products = useSelector((state) => state.products.products);
   const error = useSelector((state) => state.products.error);
 
+  const handleLanguageChange = (e) => {
+    const selectedLanguage = e.target.value;
+    dispatch(setLanguage(selectedLanguage));
+  };
+  const direction = useSelector((state) => state.translation.direction);
+
   const [wishlist, setWishlist] = useState([]);
   useEffect(() => {
     fetchUserFavourite();
@@ -254,26 +260,35 @@ function Home() {
 
 
   return (
-<div className=" items-center text-center fixed w-full">
-  <div className="  w-full  h-[90vh] mt-10 text-green-500  bg-white   lg:hidden ">
-  <div><img style={{width:'100px' , height: '100px'}} src={logo} className="mx-auto" /></div>
-    <h3 className="py-10  items-center text-center text-rap mt-10  ">{translations[language]?.experience}</h3>
-    <h3>{translations[language]?.download}</h3>
-    <div className="w-20 h-20 mx-auto items-center mt-10">
-      <a href="https://www.google.com">
-        <IoLogoGooglePlaystore className="w-20 h-20 text-green-500 rounded-md pl-1 bg-slate-600" />
-      </a>
-    </div>
-    <div className="w-20 h-20 mx-auto items-center mt-10">
-      <a href="https://twitter.com">
-        <IoMdAppstore className="w-20 h-20 text-green-500 rounded-md bg-slate-600" />
-      </a>
+<div className=" items-center text-center   w-full">
+
+<div className=" sm:fixed   w-full  h-[100vh]  text-green-500  bg-white   lg:hidden ">
+<div className={`flexLanguage ${direction === "rtl" ? "rtl" : "ltr"}`}>
+      <div className="languageInnav rightAlign">
+        <select
+          className="selectLang "
+          value={language}
+          onChange={handleLanguageChange}
+        >
+          <option value="en">English</option>
+          <option value="fr">Française</option>
+          <option value="ar">لغه عربيه</option>
+        </select>
+      </div>
     </div>
 
-
-  </div>
-      <div className="page-container">
-        <NavHeader
+    <div><img src={logo} className="mx-auto" /></div>
+  <h3 className="py-10  items-center text-center text-rap  ">{translations[language]?.experience}</h3>
+  <h3>{translations[language]?.download}</h3>
+<div className="w-20 h-20 mx-auto items-center mt-10 " >
+    <IoLogoGooglePlaystore className="w-20 h-20  text-green-500 rounded-md pl-1  bg-slate-600"/> 
+</div>
+<div className="w-20 h-20 mx-auto items-center mt-10 ">
+    <IoMdAppstore  className="w-20 h-20  text-green-500 rounded-md   bg-slate-600"/> 
+</div>
+</div>
+      <div className="page-container hidden lg:block">
+        <NavHeader 
           userId={userId}
           searchTermm={searchTerm}
           handleSearchChange={handleSearchChange}
