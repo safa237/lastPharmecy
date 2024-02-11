@@ -65,14 +65,12 @@ import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { selectLanguage } from './Translate-slice';
 import axios from 'axios';
 
-// Define the initial state
 const initialState = {
   products: [],
   loading: false,
   error: null,
 };
 
-// Define an async thunk to fetch products
 export const fetchProducts = createAsyncThunk(
   'products/fetchProducts',
   async (_, { getState }) => {
@@ -80,13 +78,14 @@ export const fetchProducts = createAsyncThunk(
       const language = selectLanguage(getState());
       console.log('Language:', language); 
       
-      const response = await axios.get('https://ecommerce-1-q7jb.onrender.com/api/v1/public/product/all', {
+      const response = await axios.get('http://195.35.28.106:8080/api/v1/public/product/all', {
         headers: {
           'Accept-Language': language,
         },
       });
-
+       console.log("products",response.data.data.products);
       return response.data.data.products;
+    
     } catch (error) {
       throw error;
     }

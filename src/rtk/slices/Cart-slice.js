@@ -17,7 +17,7 @@ export const fetchCart = createAsyncThunk("cartSlice/fetchCart", async (bearerTo
   //   "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLjFAZ21haWwuY29tIiwiaWF0IjoxNzA3MzY3MjM1LCJleHAiOjE3MDc0NTM2MzV9.KGFlNVT3_QKmI6fpbxawDvBVUXB_WVvUmIOiVsBRxQY";
 
   const response = await axios.get(
-    "https://ecommerce-1-q7jb.onrender.com/api/v1/user/cart/my",
+    "http://195.35.28.106:8080/api/v1/user/cart/my",
     {
       headers: {
         Authorization: `Bearer ${bearerToken}`,

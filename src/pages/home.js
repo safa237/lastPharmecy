@@ -52,6 +52,9 @@ import { clearWishlist } from "../rtk/slices/Wishlist-slice";
 import HorizontalScroll from "../components/Carousel";
 import { selectToken } from "../rtk/slices/Auth-slice";
 import { Modal, Button } from "react-bootstrap";
+import { FaWhatsapp } from "react-icons/fa";
+import WhatsAppIcon from "../components/Whatsapp";
+
 
 function Home() {
   const dispatch = useDispatch();
@@ -108,7 +111,7 @@ function Home() {
         await handleDeleteFromWishlist(productId);
       } else {
         const response = await axios.put(
-          `https://ecommerce-1-q7jb.onrender.com/api/v1/user/wishlist/add/${productId}`,
+          `http://195.35.28.106:8080/api/v1/user/wishlist/add/${productId}`,
           {},
           {
             headers: {
@@ -122,14 +125,14 @@ function Home() {
         await fetchUserFavourite();
       }
     } catch (error) {
-      console.log("Error adding product to wishlist: ", error.message);
+      console.log("Error adding product to wishlist: ", error);
     }
   };
 
   const handleDeleteFromWishlist = async (productId) => {
     try {
       await axios.delete(
-        `https://ecommerce-1-q7jb.onrender.com/api/v1/user/wishlist/remove/${productId}`,
+        `http://195.35.28.106:8080/api/v1/user/wishlist/remove/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${bearerToken}`,
@@ -144,32 +147,26 @@ function Home() {
   };
 
   const fetchUserFavourite = async () => {
+  
     try {
-      const response = await axios.get(
-        "https://ecommerce-1-q7jb.onrender.com/api/v1/user/wishlist/my",
-        {
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            "Accept-Language": language,
-          },
-        }
-      );
-
+      const response = await axios.get('http://195.35.28.106:8080/api/v1/user/wishlist/my', {
+        headers: {
+          Authorization: `Bearer ${bearerToken}`,
+          "Content-Type": "application/json",
+          "Accept-Language": language,
+        },
+      });
+  
       const favouriteData = response.data.data;
-
+  
       if (favouriteData && favouriteData.wishlist) {
         setWishlist(favouriteData.wishlist.wishlistItems || []);
-        console.log(
-          "Success fetch wishlist",
-          favouriteData.wishlist.wishlistItems
-        );
+        console.log('Success fetch wishlist', favouriteData.wishlist.wishlistItems);
       } else {
-        console.error(
-          "Error fetching user favourite: Unexpected response structure"
-        );
+        console.error('Error fetching user favourite: Unexpected response structure');
       }
     } catch (error) {
-      console.error("Error fetching user cart:", error);
+      console.error('Error fetching user cart:', error);
     }
   };
 
@@ -187,7 +184,7 @@ function Home() {
 
     try {
       const response = await axios.put(
-        "https://ecommerce-1-q7jb.onrender.com/api/v1/user/cart/update",
+        "http://195.35.28.106:8080/api/v1/user/cart/update",
         cartItem,
         {
           headers: {
@@ -260,7 +257,7 @@ function Home() {
 
 
   return (
-<div className=" items-center text-center   w-full">
+<div className="     w-full">
 
 <div className=" sm:fixed   w-full  h-[100vh]  text-green-500  bg-white   lg:hidden ">
 <div className={`flexLanguage ${direction === "rtl" ? "rtl" : "ltr"}`}>
@@ -279,7 +276,7 @@ function Home() {
 
     <div><img src={logo} className="mx-auto" /></div>
   <h3 className="py-10  items-center text-center text-rap  ">{translations[language]?.experience}</h3>
-  <h3>{translations[language]?.download}</h3>
+  <h3 className="py-10  items-center text-center text-rap  ">{translations[language]?.download}</h3>
 <div className="w-20 h-20 mx-auto items-center mt-10 " >
     <IoLogoGooglePlaystore className="w-20 h-20  text-green-500 rounded-md pl-1  bg-slate-600"/> 
 </div>
@@ -298,6 +295,7 @@ function Home() {
   
         <div className="green-containerr">
           <div className="home-containerr testtt">
+          <WhatsAppIcon />
             <Slider />
             <div className="titleProduct">
               <h1>{translations[language]?.magasin}</h1>
@@ -311,74 +309,71 @@ function Home() {
             )}
             {!loading && (
               <div className="card-container">
-                {products.map((product) => (
-                  <div
-                    style={{
-                      borderRadius: "15%",
-                      backgroundColor: "#fff",
-                      marginBottom: "10px",
-                      boxShadow: "5px 5px 5px #8080809e",
-                    }}
-                    className="card"
-                    key={product.id}
-                  >
-                    <div className="card-body">
-                      <div className="card-icons">
-                        <FaHeart
-                          onClick={() => handleAddToFavorites(product.productId)}
-                          style={{
-                            color: isProductInWishlist(product.productId)
-                              ? "red"
-                              : "#3EBF87",
-                          }}
-                        />
-  
-                        <FaEye
-                          className="cart-iconPro"
-                          onClick={() => handleDetailsClick(product)}
-                        />
-                      </div>
-                      <div className="card-imgstore">
-                        <Link to={`/home/product/${product.productId}`}>
-                          <img src={product.pictureUrl} alt="Product poster" />
-                        </Link>
-                      </div>
-                      <div className=" card-infoStore">
-                        <h2>{product.name}</h2>
-  
-                        <div className='rate'>
+                  {products.map((product) => (
+  <div
+    style={{
+      borderRadius: '15%',
+      backgroundColor: '#fff',
+      marginBottom: '10px',
+      boxShadow: '5px 5px 5px #8080809e',
+    }}
+    className="card"
+    key={product.id}
+  >
+   <div className="card-body">
+            <div className="card-icons">
+           
+            <FaHeart
+      onClick={() => handleAddToFavorites(product.productId)}
+      style={{ color: isProductInWishlist(product.productId) ? 'red' : '#3EBF87' }}
+    />
+          
+
+           <FaEye className="cart-iconPro"
+                 onClick={() => handleDetailsClick(product)}
+               /> 
+                              
+
+              </div>
+              <div className="card-imgstore" >
+              
+              <Link to={`/home/product/${product.productId}`}>
+          <img src={product.pictures[0]} alt="Product poster" />
+        </Link>
+                  
+              </div>
+              <div className=' card-infoStore'>
+                <h2>{product.name}</h2>
                 
-                <StarRating
-                            initialRating={product.rating}
-                           isClickable={false}
-                         /> 
-                 <h5>({product.reviews})</h5>
-   
-                 </div>
-                 
-                        <div className="price">
-                          {product.discount && (
-                            <div className="discounted-price">{`$${product.afterDiscount}`}</div>
-                          )}
-                          {product.discount && (
-                            <div className="old-price">{`$${product.price}`}</div>
-                          )}
-                          {!product.discount && (
-                            <div className="price">{`$${product.price}`}</div>
-                          )}
-                        </div>
-                      </div>
-                      <button
-                        className="proBtn"
-                        onClick={() =>
-                          handleAddToCart(product.productId, product)
-                        }
-                      >
-                        add to cart
-                      </button>
-                    </div>
-                  </div>
-                ))}
+                <div className='rate'>
+                
+               <StarRating
+                           initialRating={product.rating}
+                          isClickable={false}
+                        /> 
+                <h5>({product.reviews})</h5>
+  
+                </div>
+                <div className="price">
+          {product.discount && (
+            <div className="discounted-price">{`$${product.afterDiscount}`}</div>
+          )}
+          {product.discount && <div className="old-price">{`$${product.price}`}</div>}
+          {!product.discount && <div className="price">{`$${product.price}`}</div>}
+        </div>
+              </div>
+              <button
+  className="proBtn"
+  onClick={() => handleAddToCart(product.productId, product)}
+>
+  add to cart
+</button>
+              
+             
+            </div>
+  </div>
+))}
+
               </div>
             )}
           </div>
@@ -394,7 +389,7 @@ function Home() {
                     <Link className="footerlink">Terms & conditions </Link>
                   </div>
                   <div className="information">
-                    <h1>Informations sur la livraison</h1>
+                    <h1>Information on delivery</h1>
                     <h2>
                       Informations d'expédition Pour garantir que vos achats
                       arrivent sans problème, assurez-vous de fournir l'adresse et

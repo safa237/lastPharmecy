@@ -57,7 +57,7 @@ const handleCloseModal = () => setShowModal(false);
   
     try {
       const response = await axios.put(
-        'https://ecommerce-1-q7jb.onrender.com/api/v1/user/cart/update',
+        'http://195.35.28.106:8080/api/v1/user/cart/update',
         cartItem,
         {
           headers: {

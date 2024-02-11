@@ -10,6 +10,7 @@ import email from '../images/Email icon.png';
 import address from '../images/Location icon.png';
 import phone from '../images/phone icon.png';
 import { Link } from 'react-router-dom';
+import WhatsAppIcon from '../components/Whatsapp';
 
 import {
   setLanguage,
@@ -63,7 +64,7 @@ function Contact() {
 
       <div className="green-containerr greenabout cartGreen ">
         <div className='contactContainer home-containerr'>
-           
+           <WhatsAppIcon />
             <div className='flexcontact'>
                 <div className='onecontact'>
                     <div className='flexonecontact'>

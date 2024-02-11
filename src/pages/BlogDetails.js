@@ -16,6 +16,7 @@ import { AiOutlineLike } from "react-icons/ai";
 import { selectToken } from "../rtk/slices/Auth-slice";
 import { AiOutlineDislike } from "react-icons/ai";
 import { Modal , Button } from 'react-bootstrap';
+import WhatsAppIcon from "../components/Whatsapp";
 
 function BlogDetails() {
 
@@ -41,7 +42,7 @@ function BlogDetails() {
   useEffect(() => {
     const fetchBlogDetails = async () => {
       try {
-        const response = await fetch(`https://ecommerce-1-q7jb.onrender.com/api/v1/public/content/${blogId}/en`);
+        const response = await fetch(`http://195.35.28.106:8080/api/v1/public/content/${blogId}/en`);
         const data = await response.json();
         setblogDetails(data.data.post);
         console.log('data is' ,data);
@@ -106,7 +107,7 @@ function BlogDetails() {
       } else {
        
         await axios.put(
-          `https://ecommerce-1-q7jb.onrender.com/api/v1/user/like/${blogPostId}`,
+          `http://195.35.28.106:8080/api/v1/user/like/${blogPostId}`,
           {},
           {
             headers: {
@@ -132,7 +133,7 @@ function BlogDetails() {
         setShowModal(true);
         return;
       }
-      await axios.delete(`https://ecommerce-1-q7jb.onrender.com/api/v1/user/unlike/${blogPostId}`, {
+      await axios.delete(`http://195.35.28.106:8080/api/v1/user/unlike/${blogPostId}`, {
         headers: {
           Authorization: `Bearer ${bearerToken}`,
             'Accept-Language': language,
@@ -157,7 +158,7 @@ function BlogDetails() {
       }
 
       await axios.put(
-        `https://ecommerce-1-q7jb.onrender.com/api/v1/user/dislike/${postId}`,
+        `http://195.35.28.106:8080/api/v1/user/dislike/${postId}`,
         {},
         {
           headers: {
@@ -186,7 +187,7 @@ function BlogDetails() {
 
      <div className="green-containerr">
        <div className='testtt'>
-   
+         <WhatsAppIcon />
        <div className='blog-container'>
            <div >
              <div className='blogContent'>

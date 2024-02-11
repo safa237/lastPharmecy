@@ -44,6 +44,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   const [searchTerm, setSearchTerm] = useState("");
   // const cart = useSelector((state) => state.cart);
   const [cart, setCart] = useState([]);
+  const [numItems, setNumItems] = useState(0);
 
   const handleLogout = () => {
     dispatch(setToken(null));
@@ -56,12 +57,14 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
       setIsLoggedIn(!!userToken);
 
       console.log("tokennn is ", userToken);
+      console.log('n of items' ,   numItems);
+      console.log('Cart length:', cart.length);
     };
 
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "https://ecommerce-1-q7jb.onrender.com/api/v1/public/category/all",
+          "http://195.35.28.106:8080/api/v1/public/category/all",
           {
             headers: {
               "Accept-Language": language,
@@ -77,8 +80,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     checkLoggedInStatus();
     fetchCategories();
     fetchNotifications();
-
-  }, [ language]);
+  }, [language]);
 
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
@@ -184,7 +186,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
 
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All Categories");
-  const [readed,setReaded] = useState(true)
+  const [readed, setReaded] = useState(true);
 
   const toggleDropdown = () => {
     setIsDropdownOpen(!isDropdownOpen);
@@ -213,11 +215,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
 
-  useEffect(() => {
-    if (isLoggedIn) {
-
-    }
-  }, []);
+ 
 
   const handleNotificationsClick = () => {
     setShowNotifications(!showNotifications);
@@ -225,66 +223,56 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   };
   const fetchNotifications = async () => {
     try {
-      // const token = 'your_token_here';
-      const language = "en";
-
       const response = await axios.get(
-        "https://ecommerce-1-q7jb.onrender.com/api/v1/user/notification/all",
+        "http://195.35.28.106:8080/api/v1/user/notifications",
         {
           headers: {
             Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
             "Accept-Language": language,
           },
         }
       );
-      setNotifications(response.data.data.notifications);
-      console.log(
-        "success fetch notification in header",
-        response.data.data.notifications
-      );
+      //setNotifications(response.data.data.notifications);
+      console.log("success fetch notification in header", response.data.data);
     } catch (error) {
-      console.error("Error fetching notifications: in header", error);
+      console.error("Error fetching notifications: ", error);
     }
   };
+  
   const fetchUserCart = async () => {
     try {
-      const language = "en";
-
-      const response = await axios.get(
-        "https://ecommerce-1-q7jb.onrender.com/api/v1/user/cart/my",
-        {
-          headers: {
-            Authorization: `Bearer ${bearerToken}`,
-            "Accept-Language": language,
-          },
-        }
-      );
+      const response = await axios.get('http://195.35.28.106:8080/api/v1/user/cart/my', {
+        headers: {
+          'Authorization': `Bearer ${bearerToken}`,
+          'Accept-Language': language,
+        },
+      });
 
       const cartData = response.data.data;
 
       if (cartData && cartData.cart) {
+        console.log('Cart data:', cartData.cart.cartItems);
         setCart(cartData.cart.cartItems || []);
-        // calculateTotalPrice(cartData.cart.cartItems);
-        console.log("Success fetch carts", cartData.cart.cartItems);
-        console.log("n of products");
       } else {
-        console.error(
-          "Error fetching user cart: Unexpected response structure"
-        );
+        console.error('Error fetching user cart: Unexpected response structure');
       }
-      console.log("success fetch carts", response.data.data.cart.cartItems);
     } catch (error) {
-      console.error("Error fetching user cart:", error);
+      console.error('Error fetching user cart:', error);
     }
   };
 
-  const handleReadNotifications =()=>{
+  useEffect(() => {
+    fetchUserCart();
+  }, [language]);
+  
+
+  const handleReadNotifications = () => {
     // setNotifications([])
     // console.log('readed');
-    setReaded(false)
+    setReaded(false);
     setShowNotifications(!showNotifications);
-
-  }
+  };
 
   const direction = useSelector((state) => state.translation.direction);
 
@@ -378,15 +366,16 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                 <div className="text-line text-linelogout">
                   {isLoggedIn && (
                     <>
-                      <div onClick={handleNotificationsClick} className="relative overflow-visible">
-                        <IoIosNotificationsOutline
-                          className="noteicon"
-                          
-                        />
-                        {readed && notifications.length >0 ?           <div className=" top-2  w-10 h-10 rounded-full bg-red-500 text-center items-center text-white opacity-70 absolute">
-                          {notifications?.length}
-                        </div>: null}
-              
+                      <div
+                        onClick={handleNotificationsClick}
+                        className="relative overflow-visible"
+                      >
+                        <IoIosNotificationsOutline className="noteicon" />
+                        {readed && notifications.length > 0 ? (
+                          <div className=" top-2  w-10 h-10 rounded-full bg-red-500 text-center items-center text-white opacity-70 absolute">
+                            {notifications?.length}
+                          </div>
+                        ) : null}
                       </div>
                       <div className="notification-dropdown-container">
                         {showNotifications && (
@@ -400,17 +389,19 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                                 <div>{notification.time}</div>
                               </div>
                             ))}
-                      <div className="items-center mx-auto text-center">
-                              <button className="w-[80%]  items-center mx-auto text-center my-2 pt-1 rounded-md bg-slate-300 text-blue-600 h-9 "
-                              onClick={handleReadNotifications}
+                            <div className="items-center mx-auto text-center">
+                              <button
+                                className="w-[80%]  items-center mx-auto text-center my-2 pt-1 rounded-md bg-slate-300 text-blue-600 h-9 "
+                                onClick={handleReadNotifications}
                               >
-                                Mark As Read 
+                                Mark As Read
                               </button>
-                      </div>
+                            </div>
                           </div>
                         )}
                       </div>
                       <Link to="/cart" className="cart-link">
+                       
                         <img
                           style={{
                             marginRight: "10px",
@@ -420,6 +411,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                           src={cartimg}
                           alt="cart"
                         />
+                        <div  className="cart-items">{cart.length}</div>
                       </Link>
                       <Link>
                         <div className="user-profile" onClick={toggleSidebar}>

@@ -762,4 +762,7 @@ width: 1500px;
   border-bottom: none; /* Remove border from the last item */
 }
 
-/* Customize other styles as needed */
+.cart-items{
+  color: red;
+  font-weight: bolder;
+}

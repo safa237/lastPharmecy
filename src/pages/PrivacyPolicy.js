@@ -13,6 +13,7 @@ import email from '../images/Email icon.png';
 import address from '../images/Location icon.png';
 import phone from '../images/phone icon.png';
 import { Link } from 'react-router-dom';
+import WhatsAppIcon from '../components/Whatsapp';
 import './privacypolicy.css';
 
 function PrivacyPolicy() {
@@ -44,6 +45,8 @@ function PrivacyPolicy() {
 
       <div className="green-containerr cartGreen ">
         <div className="header-container">
+        <div className=" testtt">
+      <WhatsAppIcon />
           <div className='changePasswordText'>
             <h2>Conditions générales</h2>
             <h6>Bienvenue à Et Vitapara!</h6>
@@ -190,6 +193,7 @@ Les limites et exclusions de responsabilité énoncées dans cette section et ai
             </div>
           </div>
         </div>
+      </div>
       </div>
     </div>
     );

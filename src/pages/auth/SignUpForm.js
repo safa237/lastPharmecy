@@ -170,7 +170,7 @@ const SignUpForm = ({ showPassword, handleTogglePasswordVisibility }) => {
   };
 
   const handleRegister = () => {
-    axios.post('https://ecommerce-1-q7jb.onrender.com/api/v1/auth/register', formData, {
+    axios.post('http://195.35.28.106:8080/api/v1/auth/register', formData, {
       headers: {
         'Content-Type': 'application/json',
         'Accept-Language': language,

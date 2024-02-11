@@ -21,7 +21,7 @@ import address from '../images/Location icon.png';
 import phone from '../images/phone icon.png';
 import { FaSearch } from 'react-icons/fa';
 import { selectToken } from '../rtk/slices/Auth-slice';
-
+import WhatsAppIcon from '../components/Whatsapp';
 
 function Blog() {
   const navigate = useNavigate();
@@ -67,7 +67,7 @@ function Blog() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get('https://ecommerce-1-q7jb.onrender.com/api/v1/public/content/all' ,
+        const response = await axios.get('http://195.35.28.106:8080/api/v1/public/content/all' ,
         {
           headers: {
             'Accept-Language': language,
@@ -75,6 +75,7 @@ function Blog() {
         }
         );
         setBlogs(response.data.data.posts);
+        console.log("success fetch blogs" , response.data.data.posts)
       } catch (error) {
         console.error('Error fetching blogs:', error);
       } finally {
@@ -88,7 +89,7 @@ function Blog() {
   
   const handleBlogClick = async (clickedBlog) => { 
     try {                              
-      const response = await axios.get(`https://ecommerce-1-q7jb.onrender.com/api/v1/public/content/${clickedBlog.blogPostId}`,
+      const response = await axios.get(`http://195.35.28.106:8080/api/v1/public/content/${clickedBlog.blogPostId}`,
       {
         headers: {
           'Accept-Language': language,
@@ -168,6 +169,7 @@ function Blog() {
 
       <div className="green-containerr">
         <div className='testtt'>
+          <WhatsAppIcon />
         <div className='searchBlog'>
         <form className='formsearchblog' onSubmit={handleSearchSubmitBlog}>
     <input
@@ -259,21 +261,7 @@ function Blog() {
      )}
      </div>
 
-       {/* <div className='header-container publicBlogs'> <p className='publicBlogs'>Blogues les plus populaires</p> </div>
-      <div className='publicBlogs header-container card-blog'>
-        <div className='card2'>
-          <img src={lotion2} alt="lotion" />
-          <p>6 Ways the Holidays Can Wreak Havoc on Your Skin And What You Can Do About It</p>
-        </div>
-        <div className='card2'>
-          <img src={lotion2} alt="lotion" />
-          <p>6 Ways the Holidays Can Wreak Havoc on Your Skin And What You Can Do About It</p>
-        </div>
-        <div className='card2'>
-          <img src={lotion2} alt="lotion2" />
-          <p>6 Ways the Holidays Can Wreak Havoc on Your Skin And What You Can Do About It</p>
-        </div>
-      </div>*/}
+      
        <div className='footerr footerPhr'>
           <div className=' header-container '>
             <div className='flexFooter'>

@@ -11,6 +11,7 @@ import email from '../images/Email icon.png';
 import address from '../images/Location icon.png';
 import phone from '../images/phone icon.png';
 import { Link } from 'react-router-dom';
+import WhatsAppIcon from '../components/Whatsapp';
 
 import {
   setLanguage,
@@ -63,6 +64,8 @@ function About() {
       />
 
       <div className="green-containerr greenabout cartGreen ">
+      <div className=" testtt">
+      <WhatsAppIcon />
         <div className='aboutcontent' >
           <div className='about-head'>
             <div className='imgabout'>
@@ -176,6 +179,7 @@ function About() {
                 </div>
             </div>
           </div>
+        </div>
         </div>
       </div>
     </div>

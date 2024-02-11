@@ -7,11 +7,15 @@
   /* box-shadow: 10px 5px 10px #8080809e; */
 }
 .home-order{
-  background-color: #3EBF87 ;
+  background: linear-gradient(to right, #3DAC7B, #1F8C5D);
+  position: relative;
+  margin-right: 75px;
+  margin-bottom: 100px;
 }
 .home-containerr {
   border-radius: 50px;
   padding: 40px;
+  position: relative;
 }
 
 .myprdersParagraph {

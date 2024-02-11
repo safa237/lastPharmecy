@@ -35,6 +35,7 @@ import cartimg from '../images/Cart.png';
 import { selectToken } from '../rtk/slices/Auth-slice';
 import { setLanguage , selectLanguage , selectTranslations } from '../rtk/slices/Translate-slice';
 import './store.css';
+import WhatsAppIcon from '../components/Whatsapp';
 
 function Store  ()  {
   const dispatch = useDispatch();
@@ -88,7 +89,7 @@ function Store  ()  {
       } else {
         
         await axios.put(
-          `https://ecommerce-1-q7jb.onrender.com/api/v1/user/wishlist/add/${productId}`,
+          `http://195.35.28.106:8080/api/v1/user/wishlist/add/${productId}`,
           {},
           {
             headers: {
@@ -106,7 +107,7 @@ function Store  ()  {
   
   const handleDeleteFromWishlist = async (productId) => {
     try {
-      await axios.delete(`https://ecommerce-1-q7jb.onrender.com/api/v1/user/wishlist/remove/${productId}`, {
+      await axios.delete(`http://195.35.28.106:8080/api/v1/user/wishlist/remove/${productId}`, {
         headers: {
           Authorization: `Bearer ${bearerToken}`,
           'Accept-Language': language,
@@ -121,7 +122,7 @@ function Store  ()  {
   const fetchUserFavourite = async () => {
     try {
       const language = 'en';
-      const response = await axios.get('https://ecommerce-1-q7jb.onrender.com/api/v1/user/wishlist/my', {
+      const response = await axios.get('http://195.35.28.106:8080/api/v1/user/wishlist/my', {
         headers: {
           Authorization: `Bearer ${bearerToken}`,
           'Accept-Language': language,
@@ -210,7 +211,7 @@ function Store  ()  {
   
     try {
       const response = await axios.put(
-        'https://ecommerce-1-q7jb.onrender.com/api/v1/user/cart/update',
+        'http://195.35.28.106:8080/api/v1/user/cart/update',
         cartItem,
         {
           headers: {
@@ -264,9 +265,9 @@ function Store  ()  {
     try {
       let url;
       if (categoryId === null) {
-        url = 'https://ecommerce-1-q7jb.onrender.com/api/v1/public/product/all'
+        url = 'http://195.35.28.106:8080/api/v1/public/product/all'
       } else {
-        url = `https://ecommerce-1-q7jb.onrender.com/api/v1/public/category/${categoryId}`;
+        url = `http://195.35.28.106:8080/api/v1/public/category/${categoryId}`;
       }
 
       const response = await fetch(url, {
@@ -321,7 +322,7 @@ function Store  ()  {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('https://ecommerce-1-q7jb.onrender.com/api/v1/public/category/all', {
+        const response = await axios.get('http://195.35.28.106:8080/api/v1/public/category/all', {
           headers: {
             'Accept-Language': language,
           },
@@ -447,13 +448,7 @@ function Store  ()  {
       <div className="green-containerr">
        
         <div className='home-containerr testtt'>
-       {/**  <div  className="search-container searchStore">
-                <input type="text" style={{background: 'white'}} placeholder="Search" className="search-input"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                />
-                <FaSearch className="search-icon" />
-              </div> */}
+        <WhatsAppIcon />
 
          <div className='store-flex'>
          {loading && (
@@ -603,59 +598,70 @@ function Store  ()  {
   
         </div>
         
-        <div className='footerr footerPhr'>
-          <div className=' header-container '>
-            <div className='flexFooter'>
-                <div className='cartfooter'>
-                    <div className='important'>
-                        <h1>important links</h1>
-                        <Link className='footerlink'>privacy policy </Link>
-                        <Link className='footerlink'>cookies policy </Link>
-                        <Link className='footerlink'>Terms & conditions </Link>
-                    </div>
-                    <div className='information'>
-                        <h1>Informations sur la livraison</h1>
-                        <h2>Informations d'expédition Pour garantir que vos achats arrivent sans problème, assurez-vous de fournir l'adresse et le numéro de téléphone corrects pour garantir une 
-                        expérience d'achat pratique et efficace. Assurez-vous que vos informations d'expédition sont à jour, y compris les détails de l'adresse et le délai de livraison souhaité, pour 
-                        vous assurer de recevoir votre commande rapidement et sans retards inutiles.
-                        </h2>
-                    </div>
+        <div className="footerr footerPhr">
+            <div className=" header-container ">
+              <div className="flexFooter">
+                <div className="cartfooter">
+                  <div className="important">
+                    <h1>important links</h1>
+                    <Link className="footerlink">privacy policy </Link>
+                    <Link className="footerlink">cookies policy </Link>
+                    <Link className="footerlink">Terms & conditions </Link>
+                  </div>
+                  <div className="information">
+                    <h1>Information on delivery</h1>
+                    <h2>
+                      Informations d'expédition Pour garantir que vos achats
+                      arrivent sans problème, assurez-vous de fournir l'adresse et
+                      le numéro de téléphone corrects pour garantir une expérience
+                      d'achat pratique et efficace. Assurez-vous que vos
+                      informations d'expédition sont à jour, y compris les détails
+                      de l'adresse et le délai de livraison souhaité, pour vous
+                      assurer de recevoir votre commande rapidement et sans
+                      retards inutiles.
+                    </h2>
+                  </div>
                 </div>
-                <div className='cartfooter cartfootertwo'>
-                <div className='important'>
-                        <h1>coordonnées</h1>
-                        <h2>Contactez-nous pour toute demande de renseignements ou d'assistance dont vous avez besoin, nous sommes là pour vous fournir soutien et conseils
-                        </h2>
+                <div className="cartfooter cartfootertwo">
+                  <div className="important">
+                    <h1>coordonnées</h1>
+                    <h2>
+                      Contactez-nous pour toute demande de renseignements ou
+                      d'assistance dont vous avez besoin, nous sommes là pour vous
+                      fournir soutien et conseils
+                    </h2>
+                  </div>
+                  <div className="address">
+                    <div className="flexaddress">
+                      <img src={address} />
+                      <h2>l'adresse:</h2>
                     </div>
-                    <div className='address'>
-                        <div className='flexaddress'>
-                        <img  src={address}/>
-                        <h2>l'adresse:</h2>
-                        </div>
-                        <h2>LAAYOUNE : MADINAT EL WAHDA BLOC B NR 91 LAAYOUNE (M) <br />
-                        Tetouan: Mezanine bloc B Bureau n 4 BOROUJ 16 Avenue des Far N° 873 Tétouan
-                        </h2>
-                    </div>
-                    <div className='flexphoneemail'>
-                    <div className='address'>
-                        <div className='flexaddress'>
-                        <img  src={phone}/>
+                    <h2>
+                      LAAYOUNE : MADINAT EL WAHDA BLOC B NR 91 LAAYOUNE (M) <br />
+                      Tetouan: Mezanine bloc B Bureau n 4 BOROUJ 16 Avenue des Far
+                      N° 873 Tétouan
+                    </h2>
+                  </div>
+                  <div className="flexphoneemail">
+                    <div className="address">
+                      <div className="flexaddress">
+                        <img src={phone} />
                         <h2>Phone:</h2>
-                        </div>
-                        <h2>00212689831227</h2>
+                      </div>
+                      <h2>00212689831227</h2>
                     </div>
-                    <div className='address'>
-                        <div className='flexaddress'>
-                        <img  src={email}/>
+                    <div className="address">
+                      <div className="flexaddress">
+                        <img src={email} />
                         <h2>Email:</h2>
-                        </div>
-                        <h2>contact@vitaparapharma.com</h2>
+                      </div>
+                      <h2>contact@vitaparapharma.com</h2>
                     </div>
-                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
           </div>
-        </div>
       </div>
       <DetailsDialog
           isOpen={detailsOpen}
