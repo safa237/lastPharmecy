@@ -201,7 +201,7 @@ function BlogDetails() {
                <div className='blogimg'>
                
   <img
-    src={lotion2}
+    src={blogDetails.pictureUrl}
     alt="Product poster" />
                </div>
                <div className='infoblog'>

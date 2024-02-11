@@ -53,7 +53,7 @@ function Store  ()  {
   const [detailsOpen, setDetailsOpen] = useState(false);
   
   const [searchTerm, setSearchTerm] = useState('');
-  const [priceRange, setPriceRange] = useState({ min: 0, max: 2000 });
+  const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
 
   const userId = useSelector((state) => state.auth.id);
   const bearerToken = useSelector(selectToken);
@@ -158,18 +158,19 @@ function Store  ()  {
   
 
   useEffect(() => {
-   
     const fetchData = async () => {
       try {
         await dispatch(fetchProducts());
-       
+        setSelectedCategoryId(null); 
+        checkLoggedInStatus();
       } finally {
         setLoading(false);
       }
     };
-
+  
     fetchData();
   }, [language]);
+  
 
 
 
@@ -191,6 +192,10 @@ function Store  ()  {
   const rating = product.rate;
 
   
+  /*const handleRatingChange = (newRating) => {
+    setRatingFilter((prevRating) => (prevRating === newRating ? 0 : newRating));
+  };*/
+
   const handleRatingChange = (newRating) => {
     setRatingFilter((prevRating) => (prevRating === newRating ? 0 : newRating));
   };
@@ -265,18 +270,21 @@ function Store  ()  {
     try {
       let url;
       if (categoryId === null) {
-        url = 'http://195.35.28.106:8080/api/v1/public/product/all'
+        // If categoryId is null, fetch all products
+        url = 'http://195.35.28.106:8080/api/v1/public/product/all';
+        setSelectedCategoryId(null); // Set selectedCategoryId to null
       } else {
         url = `http://195.35.28.106:8080/api/v1/public/category/${categoryId}`;
+        setSelectedCategoryId(categoryId);
       }
-
+  
       const response = await fetch(url, {
         headers: {
           'Accept-Language': language,
         },
       });
       const data = await response.json();
-
+  
       if (response.ok) {
         dispatch(setProducts(data.data.products));
       } else {
@@ -286,6 +294,7 @@ function Store  ()  {
       console.error('Error fetching products by category:', error);
     }
   };
+  
 
 
   const handleSaleButtonClick = () => {
@@ -301,17 +310,17 @@ function Store  ()  {
 
   
 
-  const filteredProducts = products.filter((product) => {
+  /*const filteredProducts = products.filter((product) => {
     const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = selectedCategoryId ? product.categoryId === selectedCategoryId : true;
+    //const matchesCategory = selectedCategoryId ? product.categoryId === selectedCategoryId : true;
     const matchesPriceRange =
       product.price >= priceRange.min && product.price <= priceRange.max;
     
     const matchesRating = ratingFilter
       ? product.rating >= ratingFilter && product.rating < ratingFilter + 1
       : true;
-    return matchesSearch && matchesCategory && matchesPriceRange && matchesRating ;
-  });
+    return matchesSearch  && matchesPriceRange && matchesRating ;
+  });*/
 
   const handleProductClick = (productId) => {
     navigate(`/home/product/${productId}`);
@@ -396,7 +405,7 @@ function Store  ()  {
     const term = e.target.value.toLowerCase();
     setSearchTerm(term);
   };
-  const handleSearchSubmit = () => {
+  /*const handleSearchSubmit = () => {
     
     const productsInSelectedCategory = filteredProducts.filter(product => product.categoryId === selectedCategoryId);
   
@@ -414,7 +423,7 @@ function Store  ()  {
     } else {
       navigate(`/store?search=${searchTerm}${selectedCategoryId !== null ? `&category=${selectedCategoryId}` : ''}`);
     }
-  };
+  };*/
   const [productExistsInCategory, setProductExistsInCategory] = useState(true);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
 
@@ -458,61 +467,62 @@ function Store  ()  {
     )}
     {!loading && (
           <div className="card-store">
-        {filteredProducts.map((product) => (
-          <div className="cards " key={product.productId}>
-            <div className="card-body">
-            <div className="card-icons">
-           
+        {products.map((product) => {
+  const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+  const matchesPriceRange =
+    product.price >= priceRange.min && product.price <= priceRange.max;
+
+  const matchesRating = ratingFilter
+    ? Math.floor(product.rating) === ratingFilter
+    : true;
+
+  if (matchesRating && matchesPriceRange && matchesSearch ) {
+    return (
+      <div className="cards" key={product.productId}>
+        <div className="card-body">
+          <div className="card-icons">
             <FaHeart
-      onClick={() => handleAddToFavorites(product.productId)}
-      style={{ color: isProductInWishlist(product.productId) ? 'red' : '#3EBF87' }}
-    />
-          
-
-           <FaEye className="cart-iconPro"
-                 onClick={() => handleDetailsClick(product)}
-               /> 
-                              
-
-              </div>
-              <div className="card-imgstore" >
-              
-              <Link to={`/home/product/${product.productId}`}>
-          <img src={product.pictures[0]} alt="Product poster" />
-        </Link>
-                  
-              </div>
-              <div className='card-info card-infoStore'>
-                <h2>{product.name}</h2>
-                
-                <div className='rate'>
-                
-                <StarRating
-                            initialRating={product.rating}
-                           isClickable={false}
-                         /> 
-                 <h5>({product.reviews})</h5>
-   
-                 </div>
-                <div className="price">
-          {product.discount && (
-            <div className="discounted-price">{`$${product.afterDiscount}`}</div>
-          )}
-          {product.discount && <div className="old-price">{`$${product.price}`}</div>}
-          {!product.discount && <div className="price">{`$${product.price}`}</div>}
-        </div>
-              </div>
-              <button
-  className="proBtn"
-  onClick={() => handleAddToCart(product.productId, product)}
->
-  add to cart
-</button>
-              
-             
+              onClick={() => handleAddToFavorites(product.productId)}
+              style={{ color: isProductInWishlist(product.productId) ? 'red' : '#3EBF87' }}
+            />
+            <FaEye
+              className="cart-iconPro"
+              onClick={() => handleDetailsClick(product)}
+            />
+          </div>
+          <div className="card-imgstore">
+            <Link to={`/home/product/${product.productId}`}>
+              <img src={product.pictures[0]} alt="Product poster" />
+            </Link>
+          </div>
+          <div className='card-info card-infoStore'>
+            <h2>{product.name}</h2>
+            <div className='rate'>
+              <StarRating
+                initialRating={product.rating}
+                isClickable={false}
+              /> 
+              <h5>({product.reviews})</h5>
+            </div>
+            <div className="price">
+              {product.discount && (
+                <div className="discounted-price">{`$${product.afterDiscount}`}</div>
+              )}
+              {product.discount && <div className="old-price">{`$${product.price}`}</div>}
+              {!product.discount && <div className="price">{`$${product.price}`}</div>}
             </div>
           </div>
-        ))}
+          <button
+            className="proBtn"
+            onClick={() => handleAddToCart(product.productId, product)}
+          >
+            add to cart
+          </button>
+        </div>
+      </div>
+    );
+  }
+})}
           </div>
      )}
            
@@ -533,7 +543,7 @@ function Store  ()  {
       <input
         type="range"
         min="0"
-        max="2000"
+        max="10000"
         value={priceRange.max}
         onChange={handlePriceRangeChange}
       />

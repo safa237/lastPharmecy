@@ -625,7 +625,7 @@ width: 1500px;
 }
 
 .notification-dropdown {
-  min-width: 250px;
+  width: 300px;
   position: fixed;
   top: 100px; 
   right: 100px;
@@ -741,8 +741,9 @@ width: 1500px;
 
 .notification-dropdown-container {
   position: absolute;
-  top: 100%; /* Position below the triggering element */
+  top: 100%; 
   right: 0;
+  width: 200px;
 }
 
 .notification-dropdown {
@@ -765,4 +766,14 @@ width: 1500px;
 .cart-items{
   color: red;
   font-weight: bolder;
+}
+
+
+.ltr .notification-dropdown {
+  right: 100px; 
+}
+
+
+.rtl .notification-dropdown {
+  left: 100px; 
 }

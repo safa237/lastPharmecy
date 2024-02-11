@@ -253,7 +253,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
       const cartData = response.data.data;
 
       if (cartData && cartData.cart) {
-        console.log("Cart data:", cartData.cart.cartItems);
+        
         setCart(cartData.cart.cartItems || []);
       } else {
         console.error(
@@ -381,6 +381,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                       </div>
                       <div className="notification-dropdown-container">
                         {showNotifications && (
+                          <div className={`flexLanguage ${direction === "rtl" ? "rtl" : "ltr"}`}>
                           <div className="notification-dropdown">
                             {notifications.map((notification) => (
                               <div
@@ -399,6 +400,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                                 Mark As Read
                               </button>
                             </div>
+                          </div>
                           </div>
                         )}
                       </div>

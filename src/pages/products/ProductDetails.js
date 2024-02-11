@@ -180,13 +180,14 @@ const handleImageClick = (e, src) => {
                   {productDetails && productDetails.name}
                   </h2>
                 </div>
+                
                 <div className="ratenum">
                 
                 <StarRating
-                   initialRating={productDetails.rating}
+                   initialRating={productDetails && productDetails.rating}
                   isClickable={false}
                 /> 
-        <h5>({productDetails.reviews})</h5>
+        <h5>({productDetails && productDetails.reviews})</h5>
         </div>
                 <div >
   {productDetails && productDetails.discount ? (
@@ -203,11 +204,10 @@ const handleImageClick = (e, src) => {
               </div>
               <h1 style={{marginTop:'15px'}}>about this product : </h1>
               <p style={{width: '100%' , wordWrap: 'break-word'}}>
-              {/*<Editor
-        apiKey="6kmsn4k5wmyibtzgdvtwd8yjp07gsvlcn6ffmiqkwkxub6fn"
-        initialValue={aboutProductHTML}
-        onEditorChange={(content) => setAboutProductHTML(content)}
-  />*/}
+              {productDetails && productDetails.about && (
+            <div dangerouslySetInnerHTML={{ __html: productDetails.about }} />
+          )}
+
               </p>
               
             </div>
@@ -231,11 +231,11 @@ const handleImageClick = (e, src) => {
             <div className="detailsINFO">
               <h1>Product Details: </h1>
               <p>
-              {/*<Editor
+              <Editor
           apiKey="6kmsn4k5wmyibtzgdvtwd8yjp07gsvlcn6ffmiqkwkxub6fn"
           initialValue={productDetailsHTML}
           onEditorChange={(content) => setProductDetailsHTML(content)}
-      />*/}
+      />
               </p>
             </div>
             </div>

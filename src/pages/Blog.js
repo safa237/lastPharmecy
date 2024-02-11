@@ -200,12 +200,9 @@ function Blog() {
               <div className='blogContent'>
               <div className='blog-flex'>
                 <div className='blogimg'>
-                  {/*<img
-                    src={`data:image/png;base64,${selectedBlog ? selectedBlog.poster : blogs[0].poster}`}
-                    alt="Blog poster"
-          />*/}
-          <img 
-                       src={lotion2} 
+                 
+                    <img 
+                       src={selectedBlog ? selectedBlog.pictureUrl : blogs[0].pictureUrl}
                       alt="Blog poster"
                     />
                 </div>
@@ -226,6 +223,7 @@ function Blog() {
                   <div >
                   {/*<h5>{selectedBlog ? selectedBlog.title : blogs[0].title}</h5>*/}
                   </div>
+                  <h5>{selectedBlog ? selectedBlog.title : blogs[0].title}</h5>
                   <h6>{selectedBlog ? selectedBlog.content : blogs[0].content.substring(0, 525)}...</h6>
                   <div className='readArticle'>
                      <button onClick={() => handleBlogClick(blogs[0])} className="read">
@@ -240,9 +238,10 @@ function Blog() {
                 {blogs.slice(1).map((blog) => (
                   <div className='card1 card1blog' key={blog.blogPostId}>
                     <img 
-                       src={lotion2} 
+                       src={blog.pictureUrl} 
                       alt="Blog poster"
                     />
+                    <h5>{selectedBlog ? selectedBlog.title : blogs[0].title}</h5>
                     <p>{blog.content.substring(0, 125)}...</p>
                     
                     <div className='buttons'>
