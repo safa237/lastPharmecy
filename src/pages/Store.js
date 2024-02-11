@@ -478,7 +478,7 @@ function Store  ()  {
               <div className="card-imgstore" >
               
               <Link to={`/home/product/${product.productId}`}>
-          <img src={product.pictureUrl} alt="Product poster" />
+          <img src={product.pictures[0]} alt="Product poster" />
         </Link>
                   
               </div>

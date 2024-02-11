@@ -42,7 +42,13 @@ function BlogDetails() {
   useEffect(() => {
     const fetchBlogDetails = async () => {
       try {
-        const response = await fetch(`http://195.35.28.106:8080/api/v1/public/content/${blogId}/en`);
+        const response = await fetch(`http://195.35.28.106:8080/api/v1/public/post/${blogId}`,
+        {headers: {
+          'Authorization': `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+          'Accept-Language': language,
+        },}
+        );
         const data = await response.json();
         setblogDetails(data.data.post);
         console.log('data is' ,data);

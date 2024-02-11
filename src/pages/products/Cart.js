@@ -313,7 +313,16 @@ const handleDecrement = (productId) => {
     }
   };
 
-  
+  const [selectedProducts, setSelectedProducts] = useState([]);
+
+  const handleCheckboxChange = (productId) => {
+    // Toggle the selection state of the product
+    if (selectedProducts.includes(productId)) {
+      setSelectedProducts(selectedProducts.filter((id) => id !== productId));
+    } else {
+      setSelectedProducts([...selectedProducts, productId]);
+    }
+  };
   
   return(
     <div>
@@ -380,6 +389,10 @@ const handleDecrement = (productId) => {
               style={{ color: isProductInWishlist(product.productId) ? 'red' : '#3EBF87' }}
               onClick={() => handleAddToFavorites(product.productId)} />
                   </div>
+                  
+                  {/*<button onClick={() => console.log("Selected products:", selectedProducts)}>
+                    Checkout
+  </button>*/}
 
                   
                 </div>
@@ -475,3 +488,7 @@ const handleDecrement = (productId) => {
 }
 
 export default Cart;
+
+
+
+

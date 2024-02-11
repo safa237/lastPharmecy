@@ -57,8 +57,8 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
       setIsLoggedIn(!!userToken);
 
       console.log("tokennn is ", userToken);
-      console.log('n of items' ,   numItems);
-      console.log('Cart length:', cart.length);
+      console.log("n of items", numItems);
+      console.log("Cart length:", cart.length);
     };
 
     const fetchCategories = async () => {
@@ -215,8 +215,6 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   const [notifications, setNotifications] = useState([]);
   const [showNotifications, setShowNotifications] = useState(false);
 
- 
-
   const handleNotificationsClick = () => {
     setShowNotifications(!showNotifications);
     // setNotifications([])
@@ -239,33 +237,37 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
       console.error("Error fetching notifications: ", error);
     }
   };
-  
+
   const fetchUserCart = async () => {
     try {
-      const response = await axios.get('http://195.35.28.106:8080/api/v1/user/cart/my', {
-        headers: {
-          'Authorization': `Bearer ${bearerToken}`,
-          'Accept-Language': language,
-        },
-      });
+      const response = await axios.get(
+        "http://195.35.28.106:8080/api/v1/user/cart/my",
+        {
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Accept-Language": language,
+          },
+        }
+      );
 
       const cartData = response.data.data;
 
       if (cartData && cartData.cart) {
-        console.log('Cart data:', cartData.cart.cartItems);
+        console.log("Cart data:", cartData.cart.cartItems);
         setCart(cartData.cart.cartItems || []);
       } else {
-        console.error('Error fetching user cart: Unexpected response structure');
+        console.error(
+          "Error fetching user cart: Unexpected response structure"
+        );
       }
     } catch (error) {
-      console.error('Error fetching user cart:', error);
+      console.error("Error fetching user cart:", error);
     }
   };
 
   useEffect(() => {
     fetchUserCart();
-  }, [language]);
-  
+  }, [cart,language]);
 
   const handleReadNotifications = () => {
     // setNotifications([])
@@ -401,7 +403,6 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                         )}
                       </div>
                       <Link to="/cart" className="cart-link">
-                       
                         <img
                           style={{
                             marginRight: "10px",
@@ -411,7 +412,9 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
                           src={cartimg}
                           alt="cart"
                         />
-                        <div  className="cart-items">{cart.length}</div>
+                        {cart.length>0 && (
+                          <div className="cart-items">{cart.length}</div>
+                        )}
                       </Link>
                       <Link>
                         <div className="user-profile" onClick={toggleSidebar}>

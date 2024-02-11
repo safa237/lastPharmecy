@@ -180,6 +180,14 @@ const handleImageClick = (e, src) => {
                   {productDetails && productDetails.name}
                   </h2>
                 </div>
+                <div className="ratenum">
+                
+                <StarRating
+                   initialRating={productDetails.rating}
+                  isClickable={false}
+                /> 
+        <h5>({productDetails.reviews})</h5>
+        </div>
                 <div >
   {productDetails && productDetails.discount ? (
     <>
@@ -191,12 +199,7 @@ const handleImageClick = (e, src) => {
   )}
 </div>
 
-                <div className="">
-                <StarRating
-                           initialRating={productDetails && productDetails.rating}
-                          isClickable={false}
-                        /> 
-                </div>
+               
               </div>
               <h1 style={{marginTop:'15px'}}>about this product : </h1>
               <p style={{width: '100%' , wordWrap: 'break-word'}}>
