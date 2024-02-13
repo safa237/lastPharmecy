@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/lastPharmecy/static/css/main.738d7e02.css",
-    "main.js": "/lastPharmecy/static/js/main.44fcb47d.js",
+    "main.css": "/lastPharmecy/static/css/main.21bc3228.css",
+    "main.js": "/lastPharmecy/static/js/main.759cce16.js",
     "static/js/787.15e37750.chunk.js": "/lastPharmecy/static/js/787.15e37750.chunk.js",
     "static/media/slider1.png": "/lastPharmecy/static/media/slider1.006f0102d809607b3bc0.png",
     "static/media/slider2.png": "/lastPharmecy/static/media/slider2.ef3f8ab3f548ad59b7de.png",
@@ -13,12 +13,12 @@
     "static/media/Vita Logo2.png": "/lastPharmecy/static/media/Vita Logo2.04658a8b7b775128f751.png",
     "static/media/product.png": "/lastPharmecy/static/media/product.2e4bc1dbdd42b81d6956.png",
     "index.html": "/lastPharmecy/index.html",
-    "main.738d7e02.css.map": "/lastPharmecy/static/css/main.738d7e02.css.map",
-    "main.44fcb47d.js.map": "/lastPharmecy/static/js/main.44fcb47d.js.map",
+    "main.21bc3228.css.map": "/lastPharmecy/static/css/main.21bc3228.css.map",
+    "main.759cce16.js.map": "/lastPharmecy/static/js/main.759cce16.js.map",
     "787.15e37750.chunk.js.map": "/lastPharmecy/static/js/787.15e37750.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.738d7e02.css",
-    "static/js/main.44fcb47d.js"
+    "static/css/main.21bc3228.css",
+    "static/js/main.759cce16.js"
   ]
 }
