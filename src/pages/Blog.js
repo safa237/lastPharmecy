@@ -67,7 +67,7 @@ function Blog() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get('http://195.35.28.106:8080/api/v1/public/content/all' ,
+        const response = await axios.get('http://195.35.28.106:8080/api/v1/public/post/all' ,
         {
           headers: {
             'Accept-Language': language,
@@ -89,7 +89,7 @@ function Blog() {
   
   const handleBlogClick = async (clickedBlog) => { 
     try {                              
-      const response = await axios.get(`http://195.35.28.106:8080/api/v1/public/content/${clickedBlog.blogPostId}`,
+      const response = await axios.get(`http://195.35.28.106:8080/api/v1/public/post/${clickedBlog.blogPostId}`,
       {
         headers: {
           'Accept-Language': language,
@@ -224,7 +224,7 @@ function Blog() {
                   {/*<h5>{selectedBlog ? selectedBlog.title : blogs[0].title}</h5>*/}
                   </div>
                   <h5>{selectedBlog ? selectedBlog.title : blogs[0].title}</h5>
-                  <h6>{selectedBlog ? selectedBlog.content : blogs[0].content.substring(0, 525)}...</h6>
+                  <h6>{selectedBlog ? selectedBlog.content : blogs[0].content.substring(0, 600)}...</h6>
                   <div className='readArticle'>
                      <button onClick={() => handleBlogClick(blogs[0])} className="read">
                          read article
@@ -233,26 +233,25 @@ function Blog() {
                 </div>
               </div>
               </div>
-              <div className='card-blog header-container'>
-                
-                {blogs.slice(1).map((blog) => (
-                  <div className='card1 card1blog' key={blog.blogPostId}>
-                    <img 
-                       src={blog.pictureUrl} 
-                      alt="Blog poster"
-                    />
-                    <h5>{selectedBlog ? selectedBlog.title : blogs[0].title}</h5>
-                    <p>{blog.content.substring(0, 125)}...</p>
-                    
-                    <div className='buttons'>
-                      
-                      <div className='readArticle'>
-                      <button onClick={() => handleBlogClick(blog)} className="read">read article</button>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <div className='card-blog header-container' style={{ display: 'flex', flexWrap: 'wrap' }}>
+  {blogs.slice(1).map((blog) => (
+    <div className='card1 card1blog' key={blog.blogPostId} style={{ flex: '0 0 33.33%', padding: '0 15px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', alignItems: 'center', height: '100%' }}>
+        <img 
+          src={blog.pictureUrl} 
+          alt="Blog poster"
+          style={{ maxWidth: '100%', maxHeight: '100%', objectFit: 'cover' }}
+        />
+        <h5 style={{ textAlign: 'center', margin: '10px 0' }}>{blog.title }</h5>
+        <p style={{ textAlign: 'center' }}>{blog.content.substring(0, 125)}...</p>
+        <div className='buttons' style={{ textAlign: 'center', marginTop: '10px' }}>
+          <button onClick={() => handleBlogClick(blog)} className="read">read article</button>
+        </div>
+      </div>
+    </div>
+  ))}
+</div>
+
 
             </div>
           ) }
@@ -261,59 +260,60 @@ function Blog() {
      </div>
 
       
-       <div className='footerr footerPhr'>
-          <div className=' header-container '>
-            <div className='flexFooter'>
-                <div className='cartfooter'>
-                    <div className='important'>
-                        <h1>important links</h1>
-                        <Link className='footerlink'>privacy policy </Link>
-                        <Link className='footerlink'>cookies policy </Link>
-                        <Link className='footerlink'>Terms & conditions </Link>
-                    </div>
-                    <div className='information'>
-                        <h1>Informations sur la livraison</h1>
-                        <h2>Informations d'expédition Pour garantir que vos achats arrivent sans problème, assurez-vous de fournir l'adresse et le numéro de téléphone corrects pour garantir une 
-                        expérience d'achat pratique et efficace. Assurez-vous que vos informations d'expédition sont à jour, y compris les détails de l'adresse et le délai de livraison souhaité, pour 
-                        vous assurer de recevoir votre commande rapidement et sans retards inutiles.
-                        </h2>
-                    </div>
+     <div className="footerr footerPhr">
+            <div className=" header-container ">
+              <div className="flexFooter">
+                <div className="cartfooter">
+                  <div className="important">
+                    <h1>{translations[language]?.important}</h1>
+                    <Link className="footerlink">{translations[language]?.privacy} </Link>
+                    <Link className="footerlink">{translations[language]?.cookies} </Link>
+                    <Link className="footerlink">{translations[language]?.terms} </Link>
+                  </div>
+                  <div className="information">
+                    <h1>{translations[language]?.information}</h1>
+                    <h2>
+                    {translations[language]?.pfooter}
+                    </h2>
+                  </div>
                 </div>
-                <div className='cartfooter cartfootertwo'>
-                <div className='important'>
-                        <h1>coordonnées</h1>
-                        <h2>Contactez-nous pour toute demande de renseignements ou d'assistance dont vous avez besoin, nous sommes là pour vous fournir soutien et conseils
-                        </h2>
+                <div className="cartfooter cartfootertwo">
+                  <div className="important">
+                    <h1>{translations[language]?.contactdetails}</h1>
+                    <h2>
+                    {translations[language]?.require}
+                    </h2>
+                  </div>
+                  <div className="address">
+                    <div className="flexaddress">
+                      <img src={address} />
+                      <h2>{translations[language]?.addresscontact}</h2>
                     </div>
-                    <div className='address'>
-                        <div className='flexaddress'>
-                        <img  src={address}/>
-                        <h2>l'adresse:</h2>
-                        </div>
-                        <h2>LAAYOUNE : MADINAT EL WAHDA BLOC B NR 91 LAAYOUNE (M) <br />
-                        Tetouan: Mezanine bloc B Bureau n 4 BOROUJ 16 Avenue des Far N° 873 Tétouan
-                        </h2>
+                    <h2>
+                    {translations[language]?.addfooterone} <br />
+                    {translations[language]?.addfootertwo}
+                    </h2>
+                  </div>
+                  <div className="flexphoneemail">
+                    <div className="address">
+                      <div className="flexaddress">
+                        <img src={phone} />
+                        <h2>{translations[language]?.phonenumber}:</h2>
+                      </div>
+                      <h2>00212689831227</h2>
                     </div>
-                    <div className='flexphoneemail'>
-                    <div className='address'>
-                        <div className='flexaddress'>
-                        <img  src={phone}/>
-                        <h2>Phone:</h2>
-                        </div>
-                        <h2>00212689831227</h2>
+                    <div className="address">
+                      <div className="flexaddress">
+                        <img src={email} />
+                        <h2>{translations[language]?.email}:</h2>
+                      </div>
+                      <h2>contact@vitaparapharma.com</h2>
                     </div>
-                    <div className='address'>
-                        <div className='flexaddress'>
-                        <img  src={email}/>
-                        <h2>Email:</h2>
-                        </div>
-                        <h2>contact@vitaparapharma.com</h2>
-                    </div>
-                    </div>
+                  </div>
                 </div>
+              </div>
             </div>
           </div>
-        </div>
       <DialogBlog isOpen={detailsOpen} onCancel={handleCancelDetails} blogContent={dialogBlogContent} />
     </div>
       </div>

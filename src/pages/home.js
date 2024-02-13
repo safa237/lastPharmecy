@@ -11,9 +11,8 @@ import axios from "axios";
 import { Link, Navigate } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { IoLogoGooglePlaystore  } from  "react-icons/io5";
+import { IoLogoGooglePlaystore } from "react-icons/io5";
 import { IoMdAppstore } from "react-icons/io";
-
 
 import {
   setLanguage,
@@ -54,7 +53,7 @@ import { selectToken } from "../rtk/slices/Auth-slice";
 import { Modal, Button } from "react-bootstrap";
 import { FaWhatsapp } from "react-icons/fa";
 import WhatsAppIcon from "../components/Whatsapp";
-
+import Dropdown from "react-bootstrap/Dropdown";
 
 function Home() {
   const dispatch = useDispatch();
@@ -76,6 +75,14 @@ function Home() {
   const isUserLoggedIn = useSelector(selectToken) !== null;
   const products = useSelector((state) => state.products.products);
   const error = useSelector((state) => state.products.error);
+  const [mainCategory, setMainCategory] = useState([]);
+  const [selectedMainCat, setSelectedMainCat] = useState(0);
+  const [subCategory, setSubCategory] = useState([]);
+  const [selectedSubCat, setSelectedSubCat] = useState(0);
+  const [productsWithMainCat, setProductsWithMainCat] = useState([]);
+  const [productsWithSubCat, setProductsWithSubCat] = useState([]);
+  const [mainCategoryText, setMainCategoryText] = useState(translations[language]?.main );
+  const [subCategoryText, setSubCategoryText] = useState(translations[language]?.sub );
 
   const handleLanguageChange = (e) => {
     const selectedLanguage = e.target.value;
@@ -87,6 +94,8 @@ function Home() {
   useEffect(() => {
     fetchUserFavourite();
     console.log("CART", cart);
+    fetchMianCategory();
+    fetchSubCategory();
   }, []);
 
   const isProductInWishlist = (productId) => {
@@ -147,26 +156,33 @@ function Home() {
   };
 
   const fetchUserFavourite = async () => {
-  
     try {
-      const response = await axios.get('http://195.35.28.106:8080/api/v1/user/wishlist/my', {
-        headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          "Content-Type": "application/json",
-          "Accept-Language": language,
-        },
-      });
-  
+      const response = await axios.get(
+        "http://195.35.28.106:8080/api/v1/user/wishlist/my",
+        {
+          headers: {
+            Authorization: `Bearer ${bearerToken}`,
+            "Content-Type": "application/json",
+            "Accept-Language": language,
+          },
+        }
+      );
+
       const favouriteData = response.data.data;
-  
+
       if (favouriteData && favouriteData.wishlist) {
         setWishlist(favouriteData.wishlist.wishlistItems || []);
-        console.log('Success fetch wishlist', favouriteData.wishlist.wishlistItems);
+        console.log(
+          "Success fetch wishlist",
+          favouriteData.wishlist.wishlistItems
+        );
       } else {
-        console.error('Error fetching user favourite: Unexpected response structure');
+        console.error(
+          "Error fetching user favourite: Unexpected response structure"
+        );
       }
     } catch (error) {
-      console.error('Error fetching user cart:', error);
+      console.error("Error fetching user cart:", error);
     }
   };
 
@@ -254,48 +270,143 @@ function Home() {
   const handleProductClick = (productId) => {
     navigate(`/home/product/${productId}`);
   };
-
+  const fetchMianCategory = async () => {
+    try {
+      const response = await axios.get(
+        "http://195.35.28.106:8080/api/v1/public/main/category/all",
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log("success in fetching main Categoryies ", response.data.data);
+      setMainCategory(response.data.data.mainCategories);
+    } catch (error) {
+      console.log("error in fetching main Category", error);
+    }
+  };
+  const fetchSubCategory = async () => {
+    try {
+      const response = await axios.get(
+        "http://195.35.28.106:8080/api/v1/public/category/all",
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log(
+        "success in fetching Sub Categoryies ",
+        response.data.data.categories
+      );
+      setSubCategory(response.data.data.categories);
+    } catch (error) {
+      console.log("error in fetching Sub Category", error);
+    }
+  };
+  const fetchProductsByMainCat = async (MC) => {
+    try {
+      const response = await axios.get(
+        `http://195.35.28.106:8080/api/v1/public/product/main/category/${MC}`,
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log(
+        "success in fetching Products with Main Category ",
+        response.data.data
+      );
+      setProductsWithMainCat(response.data.data.products);
+    } catch (error) {
+      console.log("error in fetching Products with Main Category", error);
+    }
+  };
+  const fetchProductsBySubCat = async (MC) => {
+    try {
+      const response = await axios.get(
+        `http://195.35.28.106:8080/api/v1/public/product/category/${MC}`,
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log(
+        "success in fetching Products with Sub Category ",
+        response.data.data
+      );
+      setProductsWithSubCat(response.data.data.products);
+    } catch (error) {
+      console.log("error in fetching Products with Sub Category", error);
+    }
+  };
+  const handleMainCatSelect = (id, name) => {
+    console.log("Selected main Category id:", id);
+    fetchProductsByMainCat(id);
+    setSelectedMainCat(id);
+    setMainCategoryText(name);
+  };
+  const handleSubCatSelect = (id, name) => {
+    console.log("Selected Sub Category id:", id);
+    fetchProductsBySubCat(id);
+    setSelectedSubCat(id);
+    setSubCategoryText(name);
+  };
+  const handleDeleteFilters = () => {
+    setSelectedMainCat(0);
+    setSelectedSubCat(0);
+    setSubCategoryText('Sub Category');
+    setMainCategoryText(translations[language]?.main );
+  };
 
   return (
-<div className="     w-full">
+    <div className="     w-full">
+      <div className=" sm:fixed   w-full  h-[100vh]  text-green-500  bg-white   lg:hidden ">
+        <div className={`flexLanguage ${direction === "rtl" ? "rtl" : "ltr"}`}>
+          <div className="languageInnav rightAlign">
+            <select
+              className="selectLang "
+              value={language}
+              onChange={handleLanguageChange}
+            >
+              <option value="en">English</option>
+              <option value="fr">Française</option>
+              <option value="ar">لغه عربيه</option>
+            </select>
+          </div>
+        </div>
 
-<div className=" sm:fixed   w-full  h-[100vh]  text-green-500  bg-white   lg:hidden ">
-<div className={`flexLanguage ${direction === "rtl" ? "rtl" : "ltr"}`}>
-      <div className="languageInnav rightAlign">
-        <select
-          className="selectLang "
-          value={language}
-          onChange={handleLanguageChange}
-        >
-          <option value="en">English</option>
-          <option value="fr">Française</option>
-          <option value="ar">لغه عربيه</option>
-        </select>
+        <div>
+          <img src={logo} className="mx-auto" alt="logo" />
+        </div>
+        <h3 className="py-10  items-center text-center text-rap  ">
+          {translations[language]?.experience}
+        </h3>
+        <h3 className="py-10  items-center text-center text-rap  ">
+          {translations[language]?.download}
+        </h3>
+        <div className="w-20 h-20 mx-auto items-center mt-10 ">
+          <IoLogoGooglePlaystore className="w-20 h-20  text-green-500 rounded-md pl-1  bg-slate-600" />
+        </div>
+        <div className="w-20 h-20 mx-auto items-center mt-10 ">
+          <IoMdAppstore className="w-20 h-20  text-green-500 rounded-md   bg-slate-600" />
+        </div>
       </div>
-    </div>
-
-    <div><img src={logo} className="mx-auto" /></div>
-  <h3 className="py-10  items-center text-center text-rap  ">{translations[language]?.experience}</h3>
-  <h3 className="py-10  items-center text-center text-rap  ">{translations[language]?.download}</h3>
-<div className="w-20 h-20 mx-auto items-center mt-10 " >
-    <IoLogoGooglePlaystore className="w-20 h-20  text-green-500 rounded-md pl-1  bg-slate-600"/> 
-</div>
-<div className="w-20 h-20 mx-auto items-center mt-10 ">
-    <IoMdAppstore  className="w-20 h-20  text-green-500 rounded-md   bg-slate-600"/> 
-</div>
-</div>
       <div className="page-container hidden lg:block">
-        <NavHeader 
+        <NavHeader
           userId={userId}
           searchTermm={searchTerm}
           handleSearchChange={handleSearchChange}
           //filteredProductss={filteredProducts}
           handleProductClick={handleProductClick}
         />
-  
+
         <div className="green-containerr">
           <div className="home-containerr testtt">
-          <WhatsAppIcon />
+            <WhatsAppIcon />
             <Slider />
             <div className="titleProduct">
               <h1>{translations[language]?.magasin}</h1>
@@ -307,133 +418,319 @@ function Home() {
                 style={{ width: "50px", height: "50px", marginTop: "10px" }}
               ></div>
             )}
-            {!loading && (
-              <div className="card-container">
-                  {products.map((product) => (
-  <div
-    style={{
-      borderRadius: '15%',
-      backgroundColor: '#fff',
-      marginBottom: '10px',
-      boxShadow: '5px 5px 5px #8080809e',
-    }}
-    className="card"
-    key={product.id}
-  >
-   <div className="card-body">
-            <div className="card-icons">
-           
-            <FaHeart
-      onClick={() => handleAddToFavorites(product.productId)}
-      style={{ color: isProductInWishlist(product.productId) ? 'red' : '#3EBF87' }}
-    />
-          
+            <div>
+              <div className=" mx-auto my-10  w-[50%] h-[200px] flex flex-row gap-3">
+                <Dropdown className=" w-[30%] h-full">
+                  <Dropdown.Toggle variant="success" id="dropdown-basic" className="w-[100%] text-white">
+                    {mainCategoryText}
+                  </Dropdown.Toggle>
 
-           <FaEye className="cart-iconPro"
-                 onClick={() => handleDetailsClick(product)}
-               /> 
-                              
+                  <Dropdown.Menu>
+                    {mainCategory.map((item) => (
+                      <Dropdown.Item
+                        key={item.categoryId}
+                        value={item.categoryId}
+                        onClick={() => handleMainCatSelect(item.categoryId,item.name)}
+                      >
+                        {item.name}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+                <Dropdown className="w-[30%] h-full">
+                  <Dropdown.Toggle variant="success" id="dropdown-basic" className="w-[100%]">
+                    {subCategoryText}
+                  </Dropdown.Toggle>
 
+                  <Dropdown.Menu>
+                    {subCategory.map((item) => (
+                      <Dropdown.Item
+                        key={item.categoryId}
+                        value={item.categoryId}
+                        onClick={() => handleSubCatSelect(item.categoryId,item.name)}
+                      >
+                        {item.name}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+                <button
+                  className="btn btn-success h-10 w-[30%]"
+                  onClick={handleDeleteFilters}
+                >
+                  {translations[language]?.clear}
+                </button>
               </div>
-              <div className="card-imgstore" >
-              
-              <Link to={`/home/product/${product.productId}`}>
-          <img src={product.pictures[0]} alt="Product poster" />
-        </Link>
-                  
-              </div>
-              <div className=' card-infoStore'>
-                <h2>{product.name}</h2>
-                
-                <div className='rate'>
-                
-               <StarRating
-                           initialRating={product.rating}
-                          isClickable={false}
-                        /> 
-                <h5>({product.reviews})</h5>
-  
-                </div>
-                <div className="price">
-          {product.discount && (
-            <div className="discounted-price">{`$${product.afterDiscount}`}</div>
-          )}
-          {product.discount && <div className="old-price">{`$${product.price}`}</div>}
-          {!product.discount && <div className="price">{`$${product.price}`}</div>}
-        </div>
-              </div>
-              <button
-  className="proBtn"
-  onClick={() => handleAddToCart(product.productId, product)}
->
-  add to cart
-</button>
-              
-             
             </div>
-  </div>
-))}
+            {!loading && selectedMainCat === 0 && selectedSubCat === 0 && (
+              <div className="card-container">
+                {products.map((product) => (
+                  <div
+                    style={{
+                      borderRadius: "15%",
+                      backgroundColor: "#fff",
+                      marginBottom: "10px",
+                      boxShadow: "5px 5px 5px #8080809e",
+                    }}
+                    className="card"
+                    key={product.id}
+                  >
+                    <div className="card-body">
+                      <div className="card-icons">
+                        <FaHeart
+                          onClick={() =>
+                            handleAddToFavorites(product.productId)
+                          }
+                          style={{
+                            color: isProductInWishlist(product.productId)
+                              ? "red"
+                              : "#3EBF87",
+                          }}
+                        />
 
+                        <FaEye
+                          className="cart-iconPro"
+                          onClick={() => handleDetailsClick(product)}
+                        />
+                      </div>
+                      <div className="card-imgstore">
+                        <Link to={`/home/product/${product.productId}`}>
+                          <img src={product.pictures[0]} alt="Product poster" />
+                        </Link>
+                      </div>
+                      <div className=" card-infoStore">
+                        <h2>{product.name}</h2>
+
+                        <div className="rate">
+                          <StarRating
+                            initialRating={product.rating}
+                            isClickable={false}
+                          />
+                          <h5>({product.reviews})</h5>
+                        </div>
+                        <div className="price">
+                          {product.discount && (
+                            <div className="discounted-price">{`$${product.afterDiscount}`}</div>
+                          )}
+                          {product.discount && (
+                            <div className="old-price">{`$${product.price}`}</div>
+                          )}
+                          {!product.discount && (
+                            <div className="price">{`$${product.price}`}</div>
+                          )}
+                        </div>
+                      </div>
+                      <button
+                        className="proBtn"
+                        onClick={() =>
+                          handleAddToCart(product.productId, product)
+                        }
+                      >
+                        add to cart
+                      </button>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
+            {!loading && selectedMainCat > 0 && selectedSubCat === 0 && (
+              <div className="card-container">
+                {productsWithMainCat.length > 0 &&
+                  productsWithMainCat.map((product) => (
+                    <div
+                      style={{
+                        borderRadius: "15%",
+                        backgroundColor: "#fff",
+                        marginBottom: "10px",
+                        boxShadow: "5px 5px 5px #8080809e",
+                      }}
+                      className="card"
+                      key={product.id}
+                    >
+                      <div className="card-body">
+                        <div className="card-icons">
+                          <FaHeart
+                            onClick={() =>
+                              handleAddToFavorites(product.productId)
+                            }
+                            style={{
+                              color: isProductInWishlist(product.productId)
+                                ? "red"
+                                : "#3EBF87",
+                            }}
+                          />
+
+                          <FaEye
+                            className="cart-iconPro"
+                            onClick={() => handleDetailsClick(product)}
+                          />
+                        </div>
+                        <div className="card-imgstore">
+                          <Link to={`/home/product/${product.productId}`}>
+                            <img
+                              src={product.pictures[0]}
+                              alt="Product poster"
+                            />
+                          </Link>
+                        </div>
+                        <div className=" card-infoStore">
+                          <h2>{product.name}</h2>
+
+                          <div className="rate">
+                            <StarRating
+                              initialRating={product.rating}
+                              isClickable={false}
+                            />
+                            <h5>({product.reviews})</h5>
+                          </div>
+                          <div className="price">
+                            {product.discount && (
+                              <div className="discounted-price">{`$${product.afterDiscount}`}</div>
+                            )}
+                            {product.discount && (
+                              <div className="old-price">{`$${product.price}`}</div>
+                            )}
+                            {!product.discount && (
+                              <div className="price">{`$${product.price}`}</div>
+                            )}
+                          </div>
+                        </div>
+                        <button
+                          className="proBtn"
+                          onClick={() =>
+                            handleAddToCart(product.productId, product)
+                          }
+                        >
+                          add to cart
+                        </button>
+                      </div>
+                    </div>
+                  ))}
+              </div>
+            )}
+            {!loading && selectedMainCat > 0 && selectedSubCat > 0 && (
+              <div className="card-container">
+                {productsWithSubCat.length > 0 &&
+                  productsWithSubCat.map((product) => (
+                    <div
+                      style={{
+                        borderRadius: "15%",
+                        backgroundColor: "#fff",
+                        marginBottom: "10px",
+                        boxShadow: "5px 5px 5px #8080809e",
+                      }}
+                      className="card"
+                      key={product.id}
+                    >
+                      <div className="card-body">
+                        <div className="card-icons">
+                          <FaHeart
+                            onClick={() =>
+                              handleAddToFavorites(product.productId)
+                            }
+                            style={{
+                              color: isProductInWishlist(product.productId)
+                                ? "red"
+                                : "#3EBF87",
+                            }}
+                          />
+
+                          <FaEye
+                            className="cart-iconPro"
+                            onClick={() => handleDetailsClick(product)}
+                          />
+                        </div>
+                        <div className="card-imgstore">
+                          <Link to={`/home/product/${product.productId}`}>
+                            <img
+                              src={product.pictures[0]}
+                              alt="Product poster"
+                            />
+                          </Link>
+                        </div>
+                        <div className=" card-infoStore">
+                          <h2>{product.name}</h2>
+
+                          <div className="rate">
+                            <StarRating
+                              initialRating={product.rating}
+                              isClickable={false}
+                            />
+                            <h5>({product.reviews})</h5>
+                          </div>
+                          <div className="price">
+                            {product.discount && (
+                              <div className="discounted-price">{`$${product.afterDiscount}`}</div>
+                            )}
+                            {product.discount && (
+                              <div className="old-price">{`$${product.price}`}</div>
+                            )}
+                            {!product.discount && (
+                              <div className="price">{`$${product.price}`}</div>
+                            )}
+                          </div>
+                        </div>
+                        <button
+                          className="proBtn"
+                          onClick={() =>
+                            handleAddToCart(product.productId, product)
+                          }
+                        >
+                          add to cart
+                        </button>
+                      </div>
+                    </div>
+                  ))}
               </div>
             )}
           </div>
-  
+
           <div className="footerr footerPhr">
             <div className=" header-container ">
               <div className="flexFooter">
                 <div className="cartfooter">
                   <div className="important">
-                    <h1>important links</h1>
-                    <Link className="footerlink">privacy policy </Link>
-                    <Link className="footerlink">cookies policy </Link>
-                    <Link className="footerlink">Terms & conditions </Link>
+                    <h1>{translations[language]?.important}</h1>
+                    <Link className="footerlink">{translations[language]?.privacy} </Link>
+                    <Link className="footerlink">{translations[language]?.cookies} </Link>
+                    <Link className="footerlink">{translations[language]?.terms} </Link>
                   </div>
                   <div className="information">
-                    <h1>Information on delivery</h1>
+                    <h1>{translations[language]?.information}</h1>
                     <h2>
-                      Informations d'expédition Pour garantir que vos achats
-                      arrivent sans problème, assurez-vous de fournir l'adresse et
-                      le numéro de téléphone corrects pour garantir une expérience
-                      d'achat pratique et efficace. Assurez-vous que vos
-                      informations d'expédition sont à jour, y compris les détails
-                      de l'adresse et le délai de livraison souhaité, pour vous
-                      assurer de recevoir votre commande rapidement et sans
-                      retards inutiles.
+                    {translations[language]?.pfooter}
                     </h2>
                   </div>
                 </div>
                 <div className="cartfooter cartfootertwo">
                   <div className="important">
-                    <h1>coordonnées</h1>
+                    <h1>{translations[language]?.contactdetails}</h1>
                     <h2>
-                      Contactez-nous pour toute demande de renseignements ou
-                      d'assistance dont vous avez besoin, nous sommes là pour vous
-                      fournir soutien et conseils
+                    {translations[language]?.require}
                     </h2>
                   </div>
                   <div className="address">
                     <div className="flexaddress">
                       <img src={address} />
-                      <h2>l'adresse:</h2>
+                      <h2>{translations[language]?.addresscontact}</h2>
                     </div>
                     <h2>
-                      LAAYOUNE : MADINAT EL WAHDA BLOC B NR 91 LAAYOUNE (M) <br />
-                      Tetouan: Mezanine bloc B Bureau n 4 BOROUJ 16 Avenue des Far
-                      N° 873 Tétouan
+                    {translations[language]?.addfooterone} <br />
+                    {translations[language]?.addfootertwo}
                     </h2>
                   </div>
                   <div className="flexphoneemail">
                     <div className="address">
                       <div className="flexaddress">
                         <img src={phone} />
-                        <h2>Phone:</h2>
+                        <h2>{translations[language]?.phonenumber}:</h2>
                       </div>
                       <h2>00212689831227</h2>
                     </div>
                     <div className="address">
                       <div className="flexaddress">
                         <img src={email} />
-                        <h2>Email:</h2>
+                        <h2>{translations[language]?.email}:</h2>
                       </div>
                       <h2>contact@vitaparapharma.com</h2>
                     </div>
@@ -458,8 +755,9 @@ function Home() {
           </Modal.Footer>
         </Modal>
       </div>
-</div>
+    </div>
   );
 }
 
 export default Home;
+

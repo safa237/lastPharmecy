@@ -558,6 +558,12 @@ import './review.css';
                             name="comment"
                             value={formData.comment}
                             onChange={handleChange}
+                            style={{
+                              border: '1px solid rgb(187, 174, 174)',
+                              borderRadius: '5px', 
+                              padding: '5px', 
+                              width: '100%', 
+                            }}
                           />
                         </label>
                       </div>

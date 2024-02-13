@@ -11,7 +11,6 @@
 .blog-flex{
     display: flex;
     flex-direction: row;
- 
 }
 .blogimg{
     width: 40%;
@@ -42,7 +41,7 @@
     margin-bottom: 2em;
 }
 .readArticle{
-    width: 120px;
+    width: 100px;
     height: 30px;
     border-radius: 10px;
     background-color: #61DAA2;
@@ -70,10 +69,12 @@ p{
     display: flex;
     flex-direction: row;
     margin-top: 3em;
+    align-items: center;
+    justify-content: center;
 }
 
 .card1{
-    width: 30%;
+    width: 50%;
     text-align: center;
     margin-top: 3em;
     height: 600px;
@@ -85,6 +86,7 @@ p{
     margin-top: 3em;
     border-bottom-right-radius: 30%;
     border-top-left-radius: 30%;
+    
 }
 .card1 p{
     margin-top: 5px;
@@ -93,7 +95,6 @@ p{
 .buttons{
     display: flex;
     flex-direction: row;
-    height: 250px;
 }
 button{
     border: none;
@@ -101,10 +102,14 @@ button{
     margin-left: auto;
 }
 .read{
-    margin-left: 15px;
+   background-color: #61DAA2;
+   color: white;
+   border: none;
+   padding-left: 5px;
+   padding-right: 5px;
+   border-radius: 5px;
 }
 .publicBlogs{
-    
     color: black;
 }
 .publicBlogs p{

@@ -116,57 +116,47 @@ function ChangePassword() {
               <div className="flexFooter">
                 <div className="cartfooter">
                   <div className="important">
-                    <h1>important links</h1>
-                    <Link className="footerlink">privacy policy </Link>
-                    <Link className="footerlink">cookies policy </Link>
-                    <Link className="footerlink">Terms & conditions </Link>
+                    <h1>{translations[language]?.important}</h1>
+                    <Link className="footerlink">{translations[language]?.privacy} </Link>
+                    <Link className="footerlink">{translations[language]?.cookies} </Link>
+                    <Link className="footerlink">{translations[language]?.terms} </Link>
                   </div>
                   <div className="information">
-                    <h1>Information on delivery</h1>
+                    <h1>{translations[language]?.information}</h1>
                     <h2>
-                      Informations d'expédition Pour garantir que vos achats
-                      arrivent sans problème, assurez-vous de fournir l'adresse et
-                      le numéro de téléphone corrects pour garantir une expérience
-                      d'achat pratique et efficace. Assurez-vous que vos
-                      informations d'expédition sont à jour, y compris les détails
-                      de l'adresse et le délai de livraison souhaité, pour vous
-                      assurer de recevoir votre commande rapidement et sans
-                      retards inutiles.
+                    {translations[language]?.pfooter}
                     </h2>
                   </div>
                 </div>
                 <div className="cartfooter cartfootertwo">
                   <div className="important">
-                    <h1>coordonnées</h1>
+                    <h1>{translations[language]?.contactdetails}</h1>
                     <h2>
-                      Contactez-nous pour toute demande de renseignements ou
-                      d'assistance dont vous avez besoin, nous sommes là pour vous
-                      fournir soutien et conseils
+                    {translations[language]?.require}
                     </h2>
                   </div>
                   <div className="address">
                     <div className="flexaddress">
                       <img src={address} />
-                      <h2>l'adresse:</h2>
+                      <h2>{translations[language]?.addresscontact}</h2>
                     </div>
                     <h2>
-                      LAAYOUNE : MADINAT EL WAHDA BLOC B NR 91 LAAYOUNE (M) <br />
-                      Tetouan: Mezanine bloc B Bureau n 4 BOROUJ 16 Avenue des Far
-                      N° 873 Tétouan
+                    {translations[language]?.addfooterone} <br />
+                    {translations[language]?.addfootertwo}
                     </h2>
                   </div>
                   <div className="flexphoneemail">
                     <div className="address">
                       <div className="flexaddress">
                         <img src={phone} />
-                        <h2>Phone:</h2>
+                        <h2>{translations[language]?.phonenumber}:</h2>
                       </div>
                       <h2>00212689831227</h2>
                     </div>
                     <div className="address">
                       <div className="flexaddress">
                         <img src={email} />
-                        <h2>Email:</h2>
+                        <h2>{translations[language]?.email}:</h2>
                       </div>
                       <h2>contact@vitaparapharma.com</h2>
                     </div>

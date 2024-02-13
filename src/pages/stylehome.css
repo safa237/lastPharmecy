@@ -715,8 +715,7 @@ body{
   .old-price {
     font-size: large;
     text-decoration: line-through;
-    color: #808080;
-   
+    color: #808080; 
   }
   .rate h5{
     font-size: large;
@@ -733,7 +732,7 @@ body{
    height: 40px;
    width: 100px;
    color: white;
-   margin-bottom: 5px;
+   margin-bottom: 25px;
 }
 .titleProduct{
   text-align: center;
@@ -787,6 +786,7 @@ line-height: normal;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-right: 10px;
 }
 
 .popular h3{

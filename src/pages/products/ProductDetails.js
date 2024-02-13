@@ -14,19 +14,23 @@ import { useNavigate } from "react-router-dom";
 import { selectToken } from "../../rtk/slices/Auth-slice";
 import { Modal , Button } from 'react-bootstrap';
 import axios from "axios";
-import { selectLanguage } from "../../rtk/slices/Translate-slice";
+import { selectLanguage , selectTranslations} from "../../rtk/slices/Translate-slice";
 import { Editor } from '@tinymce/tinymce-react';
 import './ProductDetails.css';
 
-function ProductDetails({rating}) {
+
+function ProductDetails() {
   const navigate = useNavigate();
   const bearerToken = useSelector(selectToken);
   const products = useSelector((state) => state.products.products);
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const isUserLoggedIn = useSelector(selectToken) !== null;
   const language = useSelector(selectLanguage);
-
+  const myapikey = "6kmsn4k5wmyibtzgdvtwd8yjp07gsvlcn6ffmiqkwkxub6fn";
   const [productDetailsHTML, setProductDetailsHTML] = useState('');
   const [aboutProductHTML, setAboutProductHTML] = useState('');
+  const translations = useSelector(selectTranslations);
+  const rating = selectedProduct && selectedProduct.rate;
 
   const handleProductClick = (productId) => {
     navigate(`/home/product/${productId}`);
@@ -35,25 +39,28 @@ function ProductDetails({rating}) {
   const { productId } = useParams();
   const [productDetails, setProductDetails] = useState(null);
 
+  
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const response = await fetch(`http://195.35.28.106:8080/api/v1/public/product/${productId}`,
-        {headers: {
-          Authorization: `Bearer ${bearerToken}`,
-          'Accept-Language': language,
-        },}
-        );
+        const response = await fetch(`http://195.35.28.106:8080/api/v1/public/product/${productId}`, {
+          headers: {
+            
+            'Accept-Language': language,
+          },
+        });
         const data = await response.json();
         setProductDetails(data.data.product);
-        console.log('data is' ,data);
+        setSelectedProduct(data.data.product); 
+        console.log('data is', data);
       } catch (error) {
         console.error('Error fetching product details:', error);
       }
     };
-
+  
     fetchProductDetails();
   }, [productId]);
+  
  
 
   const [totalPrice, setTotalPrice] = useState(0);
@@ -140,25 +147,24 @@ const [masterImage, setMasterImage] = useState(
   "https://via.placeholder.com/200x200.png?text=Master+Image"
 );
 
-const images = [
-  {
-    src: "https://via.placeholder.com/200x60.png?text=Image+1",
-    id: 1
-  },
-  {
-    src: "https://via.placeholder.com/200x60.png?text=Image+2",
-    id: 2
-  },
-  {
-    src: "https://via.placeholder.com/200x60.png?text=Image+3",
-    id: 3
-  }
-];
+
 
 const handleImageClick = (e, src) => {
   e.preventDefault();
   setMasterImage(src);
 };
+
+
+useEffect(() => {
+  if (productDetails) {
+    setProductDetailsHTML(productDetails.productDetails);
+    setAboutProductHTML(productDetails.aboutProduct);
+
+    console.log('Product Details HTML:', productDetails.productDetails);
+  }
+}, [productDetails]);
+
+
   return (
     <div className="detailsPage">
       <NavHeader
@@ -178,17 +184,23 @@ const handleImageClick = (e, src) => {
                 <div className="">
                   <h2>
                   {productDetails && productDetails.name}
+                  
                   </h2>
                 </div>
                 
                 <div className="ratenum">
-                
-                <StarRating
-                   initialRating={productDetails && productDetails.rating}
-                  isClickable={false}
-                /> 
-        <h5>({productDetails && productDetails.reviews})</h5>
-        </div>
+  {selectedProduct && selectedProduct.rating !== undefined ? (
+    <>
+      <StarRating
+        initialRating={selectedProduct.rating}
+        isClickable={false}
+      /> 
+      <h5 style={{marginTop: '10px'}}>({selectedProduct.reviews})</h5>
+    </>
+  ) : (
+    <p>Loading...</p>
+  )}
+</div>
                 <div >
   {productDetails && productDetails.discount ? (
     <>
@@ -202,11 +214,12 @@ const handleImageClick = (e, src) => {
 
                
               </div>
-              <h1 style={{marginTop:'15px'}}>about this product : </h1>
+              <h1 style={{marginTop:'15px'}}>{translations[language]?.aboutpro} </h1>
               <p style={{width: '100%' , wordWrap: 'break-word'}}>
-              {productDetails && productDetails.about && (
-            <div dangerouslySetInnerHTML={{ __html: productDetails.about }} />
-          )}
+              <div
+    className="product-details-content"
+    dangerouslySetInnerHTML={{ __html: aboutProductHTML }}
+  />
 
               </p>
               
@@ -229,13 +242,12 @@ const handleImageClick = (e, src) => {
 
             </div>
             <div className="detailsINFO">
-              <h1>Product Details: </h1>
+              <h1>{translations[language]?.productdet} </h1>
               <p>
-              <Editor
-          apiKey="6kmsn4k5wmyibtzgdvtwd8yjp07gsvlcn6ffmiqkwkxub6fn"
-          initialValue={productDetailsHTML}
-          onEditorChange={(content) => setProductDetailsHTML(content)}
-      />
+              <div
+    className="product-details-content"
+    dangerouslySetInnerHTML={{ __html: productDetailsHTML }}
+  />
               </p>
             </div>
             </div>
@@ -247,6 +259,7 @@ const handleImageClick = (e, src) => {
                 <button onClick={() => handleDetailsClick()}>Review</button>
               </div>
               <div className="middlefooter">
+              
                 
                 <div >
                   

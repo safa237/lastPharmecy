@@ -56,26 +56,55 @@ const handleDeleteConfirmation = async () => {
 };
 
   
-const handleIncrement = (productId) => {
-  setCart(prevCart => {
-    return prevCart.map(item => {
-      if (item.productId == productId) {
-        return { ...item, quantity: item.quantity + 1 };
+const handleIncrement = async (productId) => {
+  setCart((prevCart) => {
+    return prevCart.map((item) => {
+      if (item.productId === productId) {
+        const updatedQuantity = item.quantity + 1;
+        const updatedPrice = totalPrice + item.productPrice; // Update total price
+        setTotalPrice(updatedPrice); // Update total price state
+        updateCartQuantity(productId, updatedQuantity); // Call function to update cart quantity
+        return { ...item, quantity: updatedQuantity };
       }
       return item;
     });
   });
 };
-const handleDecrement = (productId) => {
-  setCart(prevCart => {
-    return prevCart.map(item => {
-      if (item.productId == productId && item.quantity > 1) {
-        return { ...item, quantity: item.quantity - 1 };
+
+const handleDecrement = async (productId) => {
+  setCart((prevCart) => {
+    return prevCart.map((item) => {
+      if (item.productId === productId && item.quantity > 1) {
+        const updatedQuantity = item.quantity - 1;
+        const updatedPrice = totalPrice - item.productPrice; // Update total price
+        setTotalPrice(updatedPrice); // Update total price state
+        updateCartQuantity(productId, updatedQuantity); // Call function to update cart quantity
+        return { ...item, quantity: updatedQuantity };
       }
       return item;
     });
   });
 };
+
+const updateCartQuantity = async (productId, quantity) => {
+  try {
+    await axios.put(
+      'http://195.35.28.106:8080/api/v1/user/cart/update',
+      { productId, quantity },
+      {
+        headers: {
+          'Authorization': `Bearer ${bearerToken}`,
+          'Content-Type': 'application/json',
+          'Accept-Language': language,
+        },
+      }
+    );
+    console.log('Cart quantity updated successfully.');
+  } catch (error) {
+    console.error('Error updating cart quantity:', error.message);
+  }
+};
+
 
   const handleSearchChange = (e) => {
     const term = e.target.value;
@@ -114,6 +143,7 @@ const handleDecrement = (productId) => {
 
   const handleConfirmClick = () => {
     navigate('/order/confirm');
+    
   };
 
   const [cart, setCart] = useState([]);
@@ -124,25 +154,23 @@ const handleDecrement = (productId) => {
 
   const fetchUserCart = async () => {
     try {
-      
       const response = await axios.get('http://195.35.28.106:8080/api/v1/user/cart/my', {
         headers: {
           'Authorization': `Bearer ${bearerToken}`,
           'Accept-Language': language,
         },
       });
-  
-      const cartData = response.data.data; 
-      
+
+      const cartData = response.data.data;
+
       if (cartData && cartData.cart) {
-        setCart(cartData.cart.cartItems || []); 
-        calculateTotalPrice(cartData.cart.cartItems); 
+        setCart(cartData.cart.cartItems || []);
+        calculateTotalPrice(cartData.cart.cartItems);
         console.log('Success fetch carts', cartData.cart.cartItems);
-        setNumItems(cartData.cart.cartItems.length);
       } else {
         console.error('Error fetching user cart: Unexpected response structure');
       }
-      console.log('success fetch carts' , response.data.data.cart.cartItems);
+      console.log('success fetch carts', response.data.data.cart.cartItems);
     } catch (error) {
       console.error('Error fetching user cart:', error);
     }
@@ -203,7 +231,6 @@ const handleDecrement = (productId) => {
   
   const handleAddToFavorites = async (productId) => {
     try {
-      
       if (isProductInWishlist(productId)) {
         await handleDeleteFromWishlist(productId);
       } else {
@@ -272,7 +299,7 @@ const handleDecrement = (productId) => {
   useEffect(() => {
     fetchUserCart();
     fetchUserFavourite();
-  }, []);
+  }, [language]);
 
   useEffect(() => {
     calculateTotalPrice(cart);
@@ -285,7 +312,7 @@ const handleDecrement = (productId) => {
   const [updatedCart, setUpdatedCart] = useState([]);
 
   const handleSave = async (productId, product) => {
-   
+    
     const cartItem = {
       productId: productId,
       quantity: product.quantity, 
@@ -347,13 +374,13 @@ const handleDecrement = (productId) => {
                 <Image
                   src={product.pictureUrl}
                   alt="Product poster"
-                  style={{ width: "100%", height: "60%" }}
+                  style={{ width: '150px', height: '150px' , objectFit: 'contain' }}
   />
                 </div>
                 <div className="infocartone">
                   <div  className="namecart" ><h4>{product.productName}</h4></div>
                   <h5>{product.productPrice}$</h5>
-                  <h5>quantity : {product.quantity}</h5>
+                  <h5>{translations[language]?.quantity} : {product.quantity}</h5>
 
                   <div className="countercart">
                   <button
@@ -369,12 +396,7 @@ const handleDecrement = (productId) => {
   >
     <FaPlus />
   </button>
-  <button
-        className="save-button"
-        onClick={() => handleSave(product.productId, product)}
-      >
-        save
-      </button>
+  
                 </div>
                 </div>
                 <div className="infocarttwo">
@@ -412,57 +434,47 @@ const handleDecrement = (productId) => {
               <div className="flexFooter">
                 <div className="cartfooter">
                   <div className="important">
-                    <h1>important links</h1>
-                    <Link className="footerlink">privacy policy </Link>
-                    <Link className="footerlink">cookies policy </Link>
-                    <Link className="footerlink">Terms & conditions </Link>
+                    <h1>{translations[language]?.important}</h1>
+                    <Link className="footerlink">{translations[language]?.privacy} </Link>
+                    <Link className="footerlink">{translations[language]?.cookies} </Link>
+                    <Link className="footerlink">{translations[language]?.terms} </Link>
                   </div>
                   <div className="information">
-                    <h1>Information on delivery</h1>
+                    <h1>{translations[language]?.information}</h1>
                     <h2>
-                      Informations d'expédition Pour garantir que vos achats
-                      arrivent sans problème, assurez-vous de fournir l'adresse et
-                      le numéro de téléphone corrects pour garantir une expérience
-                      d'achat pratique et efficace. Assurez-vous que vos
-                      informations d'expédition sont à jour, y compris les détails
-                      de l'adresse et le délai de livraison souhaité, pour vous
-                      assurer de recevoir votre commande rapidement et sans
-                      retards inutiles.
+                    {translations[language]?.pfooter}
                     </h2>
                   </div>
                 </div>
                 <div className="cartfooter cartfootertwo">
                   <div className="important">
-                    <h1>coordonnées</h1>
+                    <h1>{translations[language]?.contactdetails}</h1>
                     <h2>
-                      Contactez-nous pour toute demande de renseignements ou
-                      d'assistance dont vous avez besoin, nous sommes là pour vous
-                      fournir soutien et conseils
+                    {translations[language]?.require}
                     </h2>
                   </div>
                   <div className="address">
                     <div className="flexaddress">
                       <img src={address} />
-                      <h2>l'adresse:</h2>
+                      <h2>{translations[language]?.addresscontact}</h2>
                     </div>
                     <h2>
-                      LAAYOUNE : MADINAT EL WAHDA BLOC B NR 91 LAAYOUNE (M) <br />
-                      Tetouan: Mezanine bloc B Bureau n 4 BOROUJ 16 Avenue des Far
-                      N° 873 Tétouan
+                    {translations[language]?.addfooterone} <br />
+                    {translations[language]?.addfootertwo}
                     </h2>
                   </div>
                   <div className="flexphoneemail">
                     <div className="address">
                       <div className="flexaddress">
                         <img src={phone} />
-                        <h2>Phone:</h2>
+                        <h2>{translations[language]?.phonenumber}:</h2>
                       </div>
                       <h2>00212689831227</h2>
                     </div>
                     <div className="address">
                       <div className="flexaddress">
                         <img src={email} />
-                        <h2>Email:</h2>
+                        <h2>{translations[language]?.email}:</h2>
                       </div>
                       <h2>contact@vitaparapharma.com</h2>
                     </div>

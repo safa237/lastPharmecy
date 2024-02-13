@@ -36,6 +36,8 @@ import { selectToken } from '../rtk/slices/Auth-slice';
 import { setLanguage , selectLanguage , selectTranslations } from '../rtk/slices/Translate-slice';
 import './store.css';
 import WhatsAppIcon from '../components/Whatsapp';
+import Dropdown from "react-bootstrap/Dropdown";
+
 
 function Store  ()  {
   const dispatch = useDispatch();
@@ -51,6 +53,15 @@ function Store  ()  {
 
   const [selectedProduct, setSelectedProduct] = useState(null);
   const [detailsOpen, setDetailsOpen] = useState(false);
+
+  const [mainCategory, setMainCategory] = useState([]);
+  const [selectedMainCat, setSelectedMainCat] = useState(0);
+  const [subCategory, setSubCategory] = useState([]);
+  const [selectedSubCat, setSelectedSubCat] = useState(0);
+  const [productsWithMainCat, setProductsWithMainCat] = useState([]);
+  const [productsWithSubCat, setProductsWithSubCat] = useState([]);
+  const [mainCategoryText, setMainCategoryText] = useState(translations[language]?.main );
+  const [subCategoryText, setSubCategoryText] = useState(translations[language]?.sub );
   
   const [searchTerm, setSearchTerm] = useState('');
   const [priceRange, setPriceRange] = useState({ min: 0, max: 10000 });
@@ -72,8 +83,9 @@ function Store  ()  {
   
   const [wishlist, setWishlist] = useState([]);
   useEffect(() => {
-    // Fetch user's wishlist on component mount
     fetchUserFavourite();
+    fetchMianCategory();
+    fetchSubCategory();
   }, []);
   
   const isProductInWishlist = (productId) => {
@@ -442,6 +454,98 @@ function Store  ()  {
   
 
 
+  const fetchMianCategory = async () => {
+    try {
+      const response = await axios.get(
+        "http://195.35.28.106:8080/api/v1/public/main/category/all",
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log("success in fetching main Categoryies ", response.data.data);
+      setMainCategory(response.data.data.mainCategories);
+    } catch (error) {
+      console.log("error in fetching main Category", error);
+    }
+  };
+  const fetchSubCategory = async () => {
+    try {
+      const response = await axios.get(
+        "http://195.35.28.106:8080/api/v1/public/category/all",
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log(
+        "success in fetching Sub Categoryies ",
+        response.data.data.categories
+      );
+      setSubCategory(response.data.data.categories);
+    } catch (error) {
+      console.log("error in fetching Sub Category", error);
+    }
+  };
+  const fetchProductsByMainCat = async (MC) => {
+    try {
+      const response = await axios.get(
+        `http://195.35.28.106:8080/api/v1/public/product/main/category/${MC}`,
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log(
+        "success in fetching Products with Main Category ",
+        response.data.data
+      );
+      setProductsWithMainCat(response.data.data.products);
+    } catch (error) {
+      console.log("error in fetching Products with Main Category", error);
+    }
+  };
+  const fetchProductsBySubCat = async (MC) => {
+    try {
+      const response = await axios.get(
+        `http://195.35.28.106:8080/api/v1/public/product/category/${MC}`,
+        {
+          headers: {
+            "Accept-Language": language,
+          },
+        }
+      );
+      console.log(
+        "success in fetching Products with Sub Category ",
+        response.data.data
+      );
+      setProductsWithSubCat(response.data.data.products);
+    } catch (error) {
+      console.log("error in fetching Products with Sub Category", error);
+    }
+  };
+  const handleMainCatSelect = (id, name) => {
+    console.log("Selected main Category id:", id);
+    fetchProductsByMainCat(id);
+    setSelectedMainCat(id);
+    setMainCategoryText(name);
+  };
+  const handleSubCatSelect = (id, name) => {
+    console.log("Selected Sub Category id:", id);
+    fetchProductsBySubCat(id);
+    setSelectedSubCat(id);
+    setSubCategoryText(name);
+  };
+  const handleDeleteFilters = () => {
+    setSelectedMainCat(0);
+    setSelectedSubCat(0);
+    setSubCategoryText('Sub Category');
+    setMainCategoryText(translations[language]?.main );
+  };
+
     return (
       <div className="page-container">
       {/* Header Container */}
@@ -459,15 +563,187 @@ function Store  ()  {
         <div className='home-containerr testtt'>
         <WhatsAppIcon />
 
+        <div>
+              <div className=" mx-auto  w-[50%] h-[200px] flex flex-row gap-3">
+                <Dropdown className=" w-[30%] h-full">
+                  <Dropdown.Toggle variant="success" id="dropdown-basic" className="w-[100%] text-white">
+                    {mainCategoryText}
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    {mainCategory.map((item) => (
+                      <Dropdown.Item
+                        key={item.categoryId}
+                        value={item.categoryId}
+                        onClick={() => handleMainCatSelect(item.categoryId,item.name)}
+                      >
+                        {item.name}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+                <Dropdown className="w-[30%] h-full">
+                  <Dropdown.Toggle variant="success" id="dropdown-basic" className="w-[100%]">
+                    {subCategoryText}
+                  </Dropdown.Toggle>
+
+                  <Dropdown.Menu>
+                    {subCategory.map((item) => (
+                      <Dropdown.Item
+                        key={item.categoryId}
+                        value={item.categoryId}
+                        onClick={() => handleSubCatSelect(item.categoryId,item.name)}
+                      >
+                        {item.name}
+                      </Dropdown.Item>
+                    ))}
+                  </Dropdown.Menu>
+                </Dropdown>
+                <button
+                  className="btn btn-success h-10 w-[30%]"
+                  onClick={handleDeleteFilters}
+                >
+                  {translations[language]?.clear}
+                </button>
+              </div>
+            </div>
+
          <div className='store-flex'>
          {loading && (
       <div className="loading-spinner" style={{width: '50px' , height: '50px' , marginTop: '10px'}}>
       
       </div>
     )}
-    {!loading && (
+
+    {!loading && selectedMainCat === 0 && selectedSubCat === 0 && (
           <div className="card-store">
         {products.map((product) => {
+  const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+  const matchesPriceRange =
+    product.price >= priceRange.min && product.price <= priceRange.max;
+
+  const matchesRating = ratingFilter
+    ? Math.floor(product.rating) === ratingFilter
+    : true;
+
+  if (matchesRating && matchesPriceRange && matchesSearch ) {
+    return (
+      <div className="cards" key={product.productId}>
+        <div className="card-body">
+          <div className="card-icons">
+            <FaHeart
+              onClick={() => handleAddToFavorites(product.productId)}
+              style={{ color: isProductInWishlist(product.productId) ? 'red' : '#3EBF87' }}
+            />
+            <FaEye
+              className="cart-iconPro"
+              onClick={() => handleDetailsClick(product)}
+            />
+          </div>
+          <div className="card-imgstore">
+            <Link to={`/home/product/${product.productId}`}>
+              <img src={product.pictures[0]} alt="Product poster" />
+            </Link>
+          </div>
+          <div className='card-info card-infoStore'>
+            <h2>{product.name}</h2>
+            <div className='rate'>
+              <StarRating
+                initialRating={product.rating}
+                isClickable={false}
+              /> 
+              <h5>({product.reviews})</h5>
+            </div>
+            <div className="price">
+              {product.discount && (
+                <div className="discounted-price">{`$${product.afterDiscount}`}</div>
+              )}
+              {product.discount && <div className="old-price">{`$${product.price}`}</div>}
+              {!product.discount && <div className="price">{`$${product.price}`}</div>}
+            </div>
+          </div>
+          <button
+            className="proBtn"
+            onClick={() => handleAddToCart(product.productId, product)}
+          >
+            add to cart
+          </button>
+        </div>
+      </div>
+    );
+  }
+})}
+          </div>
+     )}
+
+
+{!loading && selectedMainCat > 0 && selectedSubCat === 0 && (
+          <div className="card-store">
+            
+        { productsWithMainCat.length > 0 &&
+        productsWithMainCat.map((product) => {
+  const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
+  const matchesPriceRange =
+    product.price >= priceRange.min && product.price <= priceRange.max;
+
+  const matchesRating = ratingFilter
+    ? Math.floor(product.rating) === ratingFilter
+    : true;
+
+  if (matchesRating && matchesPriceRange && matchesSearch ) {
+    return (
+      <div className="cards" key={product.productId}>
+        <div className="card-body">
+          <div className="card-icons">
+            <FaHeart
+              onClick={() => handleAddToFavorites(product.productId)}
+              style={{ color: isProductInWishlist(product.productId) ? 'red' : '#3EBF87' }}
+            />
+            <FaEye
+              className="cart-iconPro"
+              onClick={() => handleDetailsClick(product)}
+            />
+          </div>
+          <div className="card-imgstore">
+            <Link to={`/home/product/${product.productId}`}>
+              <img src={product.pictures[0]} alt="Product poster" />
+            </Link>
+          </div>
+          <div className='card-info card-infoStore'>
+            <h2>{product.name}</h2>
+            <div className='rate'>
+              <StarRating
+                initialRating={product.rating}
+                isClickable={false}
+              /> 
+              <h5>({product.reviews})</h5>
+            </div>
+            <div className="price">
+              {product.discount && (
+                <div className="discounted-price">{`$${product.afterDiscount}`}</div>
+              )}
+              {product.discount && <div className="old-price">{`$${product.price}`}</div>}
+              {!product.discount && <div className="price">{`$${product.price}`}</div>}
+            </div>
+          </div>
+          <button
+            className="proBtn"
+            onClick={() => handleAddToCart(product.productId, product)}
+          >
+            add to cart
+          </button>
+        </div>
+      </div>
+    );
+  }
+})}
+          </div>
+     )}
+
+{!loading && selectedMainCat > 0 && selectedSubCat > 0 && (
+          <div className="card-store">
+        { productsWithSubCat.length > 0 &&
+        productsWithSubCat.map((product) => {
   const matchesSearch = product.name.toLowerCase().includes(searchTerm.toLowerCase());
   const matchesPriceRange =
     product.price >= priceRange.min && product.price <= priceRange.max;
@@ -550,28 +826,7 @@ function Store  ()  {
      
     </div>
     </div>
-          <h5 style={{color : 'black'}}>{translations[language]?.category}</h5>
-          <div className='filterCatdiv'>
-          <div className='rateFilter'>
-          <button
-                    color="primary"
-                    onClick={() => handleCategoryFilter(null)}
-                    className='filterbycat'
-                  >
-                    {translations[language]?.AllCategories}
-                  </button>
-  {categories.map(category => (
-    <button
-    key={category.categoryId}
-    color="primary"
-    onClick={() => handleCategoryFilter(category.categoryId)}
-    className={`filterbycat ${selectedCategory === category.categoryId ? 'active' : ''}`}
-  >
-      {category.name}
-    </button>
-  ))}
-</div>
-</div>
+         
 
 <h5 style={{marginTop: '10px'}}>sale products</h5>
 
@@ -613,57 +868,47 @@ function Store  ()  {
               <div className="flexFooter">
                 <div className="cartfooter">
                   <div className="important">
-                    <h1>important links</h1>
-                    <Link className="footerlink">privacy policy </Link>
-                    <Link className="footerlink">cookies policy </Link>
-                    <Link className="footerlink">Terms & conditions </Link>
+                    <h1>{translations[language]?.important}</h1>
+                    <Link className="footerlink">{translations[language]?.privacy} </Link>
+                    <Link className="footerlink">{translations[language]?.cookies} </Link>
+                    <Link className="footerlink">{translations[language]?.terms} </Link>
                   </div>
                   <div className="information">
-                    <h1>Information on delivery</h1>
+                    <h1>{translations[language]?.information}</h1>
                     <h2>
-                      Informations d'expédition Pour garantir que vos achats
-                      arrivent sans problème, assurez-vous de fournir l'adresse et
-                      le numéro de téléphone corrects pour garantir une expérience
-                      d'achat pratique et efficace. Assurez-vous que vos
-                      informations d'expédition sont à jour, y compris les détails
-                      de l'adresse et le délai de livraison souhaité, pour vous
-                      assurer de recevoir votre commande rapidement et sans
-                      retards inutiles.
+                    {translations[language]?.pfooter}
                     </h2>
                   </div>
                 </div>
                 <div className="cartfooter cartfootertwo">
                   <div className="important">
-                    <h1>coordonnées</h1>
+                    <h1>{translations[language]?.contactdetails}</h1>
                     <h2>
-                      Contactez-nous pour toute demande de renseignements ou
-                      d'assistance dont vous avez besoin, nous sommes là pour vous
-                      fournir soutien et conseils
+                    {translations[language]?.require}
                     </h2>
                   </div>
                   <div className="address">
                     <div className="flexaddress">
                       <img src={address} />
-                      <h2>l'adresse:</h2>
+                      <h2>{translations[language]?.addresscontact}</h2>
                     </div>
                     <h2>
-                      LAAYOUNE : MADINAT EL WAHDA BLOC B NR 91 LAAYOUNE (M) <br />
-                      Tetouan: Mezanine bloc B Bureau n 4 BOROUJ 16 Avenue des Far
-                      N° 873 Tétouan
+                    {translations[language]?.addfooterone} <br />
+                    {translations[language]?.addfootertwo}
                     </h2>
                   </div>
                   <div className="flexphoneemail">
                     <div className="address">
                       <div className="flexaddress">
                         <img src={phone} />
-                        <h2>Phone:</h2>
+                        <h2>{translations[language]?.phonenumber}:</h2>
                       </div>
                       <h2>00212689831227</h2>
                     </div>
                     <div className="address">
                       <div className="flexaddress">
                         <img src={email} />
-                        <h2>Email:</h2>
+                        <h2>{translations[language]?.email}:</h2>
                       </div>
                       <h2>contact@vitaparapharma.com</h2>
                     </div>

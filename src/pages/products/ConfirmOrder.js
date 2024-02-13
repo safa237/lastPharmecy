@@ -132,8 +132,7 @@ function ConfirmOrder() {
         console.log("Error submitting order:", response.data);
 
         if (response.data && response.data.message) {
-          setModalMessage(` ${response.data.message}`);
-          setShowModal(true);
+          navigate('/order');
         } else {
           console.error("Unknown error:", response.data);
         }
@@ -168,6 +167,7 @@ function ConfirmOrder() {
         street: "",
         zipCode: "",
       });
+      setShowForm(false);
     } catch (error) {
       console.log("error in add newAddress >>", error);
     }
@@ -232,13 +232,13 @@ function ConfirmOrder() {
         <Table striped bordered hover size="sm">
           <thead>
             <tr>
-              <th className="p-4">country</th>
-              <th className="p-4">city</th>
-              <th className="p-4">region</th>
-              <th className="p-4">street</th>
-              <th className="p-4">zipCode</th>
-              <th className="p-4">action</th>
-              <th className="p-4">delete</th>
+              <th className="p-4">{translations[language]?.country}</th>
+              <th className="p-4">{translations[language]?.city}</th>
+              <th className="p-4">{translations[language]?.region}</th>
+              <th className="p-4">{translations[language]?.street}</th>
+              <th className="p-4">{translations[language]?.zipcode}</th>
+              <th className="p-4">{translations[language]?.action}</th>
+              <th className="p-4">{translations[language]?.delete}</th>
             </tr>
           </thead>
           <tbody>
@@ -254,7 +254,7 @@ function ConfirmOrder() {
                     onClick={() => handleSubmit(item.addressId)}
                     className="useaddress"
                   >
-                    confirm order in this address
+                    {translations[language]?.confirmorder}
                   </button>
                 </td>
                 <td>
@@ -262,7 +262,7 @@ function ConfirmOrder() {
                     onClick={() => handleDeleteAddress(item.addressId)}
                     className="useaddress2"
                   >
-                    Delete this address
+                    {translations[language]?.deleteadd}
                   </button>
                 </td>
               </tr>
@@ -277,7 +277,7 @@ function ConfirmOrder() {
               className="useaddress"
               onClick={() => setShowForm(!showForm)}
             >
-              Adding New Address
+              {translations[language]?.addaddress}
             </button>
           )}
 
@@ -286,11 +286,11 @@ function ConfirmOrder() {
               <Table striped bordered hover size="sm" className="mt-4">
                 <thead>
                   <tr>
-                    <th className="p-4">country</th>
-                    <th className="p-4">city</th>
-                    <th className="p-4">region</th>
-                    <th className="p-4">street</th>
-                    <th className="p-4">zipCode</th>
+                    <th className="p-4">{translations[language]?.country}</th>
+                    <th className="p-4">{translations[language]?.city}</th>
+                    <th className="p-4">{translations[language]?.region}</th>
+                    <th className="p-4">{translations[language]?.street}</th>
+                    <th className="p-4">{translations[language]?.zipcode}</th>
                     <th>action</th>
                   </tr>
                 </thead>
@@ -349,7 +349,7 @@ function ConfirmOrder() {
                         className="useaddress"
                         onClick={() => addNewAddress()}
                       >
-                        Save this Address
+                        {translations[language]?.saveadd}
                       </button>
                     </td>
                   </tr>
@@ -366,57 +366,47 @@ function ConfirmOrder() {
               <div className="flexFooter">
                 <div className="cartfooter">
                   <div className="important">
-                    <h1>important links</h1>
-                    <Link className="footerlink">privacy policy </Link>
-                    <Link className="footerlink">cookies policy </Link>
-                    <Link className="footerlink">Terms & conditions </Link>
+                    <h1>{translations[language]?.important}</h1>
+                    <Link className="footerlink">{translations[language]?.privacy} </Link>
+                    <Link className="footerlink">{translations[language]?.cookies} </Link>
+                    <Link className="footerlink">{translations[language]?.terms} </Link>
                   </div>
                   <div className="information">
-                    <h1>Information on delivery</h1>
+                    <h1>{translations[language]?.information}</h1>
                     <h2>
-                      Informations d'expédition Pour garantir que vos achats
-                      arrivent sans problème, assurez-vous de fournir l'adresse et
-                      le numéro de téléphone corrects pour garantir une expérience
-                      d'achat pratique et efficace. Assurez-vous que vos
-                      informations d'expédition sont à jour, y compris les détails
-                      de l'adresse et le délai de livraison souhaité, pour vous
-                      assurer de recevoir votre commande rapidement et sans
-                      retards inutiles.
+                    {translations[language]?.pfooter}
                     </h2>
                   </div>
                 </div>
                 <div className="cartfooter cartfootertwo">
                   <div className="important">
-                    <h1>coordonnées</h1>
+                    <h1>{translations[language]?.contactdetails}</h1>
                     <h2>
-                      Contactez-nous pour toute demande de renseignements ou
-                      d'assistance dont vous avez besoin, nous sommes là pour vous
-                      fournir soutien et conseils
+                    {translations[language]?.require}
                     </h2>
                   </div>
                   <div className="address">
                     <div className="flexaddress">
-                      <img src={addresss} />
-                      <h2>l'adresse:</h2>
+                      <img src={address} />
+                      <h2>{translations[language]?.addresscontact}</h2>
                     </div>
                     <h2>
-                      LAAYOUNE : MADINAT EL WAHDA BLOC B NR 91 LAAYOUNE (M) <br />
-                      Tetouan: Mezanine bloc B Bureau n 4 BOROUJ 16 Avenue des Far
-                      N° 873 Tétouan
+                    {translations[language]?.addfooterone} <br />
+                    {translations[language]?.addfootertwo}
                     </h2>
                   </div>
                   <div className="flexphoneemail">
                     <div className="address">
                       <div className="flexaddress">
                         <img src={phone} />
-                        <h2>Phone:</h2>
+                        <h2>{translations[language]?.phonenumber}:</h2>
                       </div>
                       <h2>00212689831227</h2>
                     </div>
                     <div className="address">
                       <div className="flexaddress">
                         <img src={email} />
-                        <h2>Email:</h2>
+                        <h2>{translations[language]?.email}:</h2>
                       </div>
                       <h2>contact@vitaparapharma.com</h2>
                     </div>
