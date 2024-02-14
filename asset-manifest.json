@@ -1,10 +1,8 @@
 {
   "files": {
-    "main.css": "/lastPharmecy/static/css/main.21bc3228.css",
-    "main.js": "/lastPharmecy/static/js/main.759cce16.js",
+    "main.css": "/lastPharmecy/static/css/main.dda6b201.css",
+    "main.js": "/lastPharmecy/static/js/main.b9823155.js",
     "static/js/787.15e37750.chunk.js": "/lastPharmecy/static/js/787.15e37750.chunk.js",
-    "static/media/slider1.png": "/lastPharmecy/static/media/slider1.006f0102d809607b3bc0.png",
-    "static/media/slider2.png": "/lastPharmecy/static/media/slider2.ef3f8ab3f548ad59b7de.png",
     "static/media/myimg.png": "/lastPharmecy/static/media/myimg.09bdd0e5555d5adbee77.png",
     "static/media/blog.png": "/lastPharmecy/static/media/blog.a50e1e871a6e5de5169f.png",
     "static/media/carousel.png": "/lastPharmecy/static/media/carousel.dca39eeeb0d4369e68c3.png",
@@ -12,13 +10,17 @@
     "static/media/lotion2.png": "/lastPharmecy/static/media/lotion2.f241b5c1fd7ef4dfe29e.png",
     "static/media/Vita Logo2.png": "/lastPharmecy/static/media/Vita Logo2.04658a8b7b775128f751.png",
     "static/media/product.png": "/lastPharmecy/static/media/product.2e4bc1dbdd42b81d6956.png",
+    "static/media/slick.svg": "/lastPharmecy/static/media/slick.2630a3e3eab21c607e21.svg",
+    "static/media/slick.eot": "/lastPharmecy/static/media/slick.a4e97f5a2a64f0ab1323.eot",
+    "static/media/slick.ttf": "/lastPharmecy/static/media/slick.c94f7671dcc99dce43e2.ttf",
+    "static/media/slick.woff": "/lastPharmecy/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/lastPharmecy/index.html",
-    "main.21bc3228.css.map": "/lastPharmecy/static/css/main.21bc3228.css.map",
-    "main.759cce16.js.map": "/lastPharmecy/static/js/main.759cce16.js.map",
+    "main.dda6b201.css.map": "/lastPharmecy/static/css/main.dda6b201.css.map",
+    "main.b9823155.js.map": "/lastPharmecy/static/js/main.b9823155.js.map",
     "787.15e37750.chunk.js.map": "/lastPharmecy/static/js/787.15e37750.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.21bc3228.css",
-    "static/js/main.759cce16.js"
+    "static/css/main.dda6b201.css",
+    "static/js/main.b9823155.js"
   ]
 }
