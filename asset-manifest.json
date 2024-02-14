@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/lastPharmecy/static/css/main.dda6b201.css",
-    "main.js": "/lastPharmecy/static/js/main.b9823155.js",
+    "main.js": "/lastPharmecy/static/js/main.c4c9ad8c.js",
     "static/js/787.15e37750.chunk.js": "/lastPharmecy/static/js/787.15e37750.chunk.js",
     "static/media/myimg.png": "/lastPharmecy/static/media/myimg.09bdd0e5555d5adbee77.png",
     "static/media/blog.png": "/lastPharmecy/static/media/blog.a50e1e871a6e5de5169f.png",
@@ -16,11 +16,11 @@
     "static/media/slick.woff": "/lastPharmecy/static/media/slick.295183786cd8a1389865.woff",
     "index.html": "/lastPharmecy/index.html",
     "main.dda6b201.css.map": "/lastPharmecy/static/css/main.dda6b201.css.map",
-    "main.b9823155.js.map": "/lastPharmecy/static/js/main.b9823155.js.map",
+    "main.c4c9ad8c.js.map": "/lastPharmecy/static/js/main.c4c9ad8c.js.map",
     "787.15e37750.chunk.js.map": "/lastPharmecy/static/js/787.15e37750.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.dda6b201.css",
-    "static/js/main.b9823155.js"
+    "static/js/main.c4c9ad8c.js"
   ]
 }
