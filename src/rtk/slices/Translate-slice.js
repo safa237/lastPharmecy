@@ -120,7 +120,8 @@ const translationSlice = createSlice({
         "require" : "Contact us for any inquiries or assistance you require, we are here to provide support and advice",
         "addfooterone" : "LAAYOUNE: MADINAT EL WAHDA BLOCK B NR 91 LAAYOUNE (M)",
         "addfootertwo" : "Tetouan: Mezanine block B Office n° 4 BOROUJ 16 Avenue des Far N° 873 Tétouan",
-
+        "popular" : "popular products",
+        "featured" : "discover what our featured products are",
       },
       "fr": {
         "home" : "Maison",
@@ -236,7 +237,8 @@ const translationSlice = createSlice({
         "require" : "Contactez-nous pour toute demande de renseignements ou d'assistance dont vous avez besoin, nous sommes là pour vous fournir soutien et conseils",
         "addfooterone" : "LAAYOUNE : MADINAT EL WAHDA BLOC B NR 91 LAAYOUNE (M)",
         "addfootertwo" :"Tétouan : Mezanine bloc B Bureau n 4 BOROUJ 16 Avenue des Far N° 873 Tétouan",
-
+        "popular" : "produits populaires",
+        "featured" : "découvrez quels sont nos produits vedettes",
       },
       "ar": {
         "home" : "الرئيسيه",
@@ -352,7 +354,8 @@ const translationSlice = createSlice({
         "require" : "اتصل بنا للحصول على أية استفسارات أو مساعدة تحتاجها، فنحن هنا لتقديم الدعم والمشورة",
         "addfooterone" : "العيون: مدينة الوحدة قطعة ب رقم 91 العيون (م)",
         "addfootertwo" : "تطوان: الميزانين كتلة ب مكتب رقم 4 البروج 16 شارع الأقصى رقم 873 تطوان",
-        
+        "popular" : "المنتجات الشعبية",
+        "featured" : "اكتشف ما هي منتجاتنا المميزة",
       }
     },
   },

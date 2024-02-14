@@ -54,6 +54,8 @@ import { Modal, Button } from "react-bootstrap";
 import { FaWhatsapp } from "react-icons/fa";
 import WhatsAppIcon from "../components/Whatsapp";
 import Dropdown from "react-bootstrap/Dropdown";
+import Advertesment from "../components/Advertesment";
+
 
 function Home() {
   const dispatch = useDispatch();
@@ -96,7 +98,9 @@ function Home() {
     console.log("CART", cart);
     fetchMianCategory();
     fetchSubCategory();
-  }, []);
+    setMainCategoryText(translations[language]?.main || translations['en']?.main);
+  setSubCategoryText(translations[language]?.sub || translations['en']?.sub);
+  }, [language, translations]);
 
   const isProductInWishlist = (productId) => {
     return wishlist.some((item) => item.productId === productId);
@@ -408,6 +412,7 @@ function Home() {
           <div className="home-containerr testtt">
             <WhatsAppIcon />
             <Slider />
+           
             <div className="titleProduct">
               <h1>{translations[language]?.magasin}</h1>
               <h2>{translations[language]?.learnmore}</h2>
@@ -683,6 +688,13 @@ function Home() {
                   ))}
               </div>
             )}
+          
+
+          <div className="titleProduct">
+              <h1>{translations[language]?.popular}</h1>
+              <h2>{translations[language]?.featured}</h2>
+            </div>
+          <Advertesment />
           </div>
 
           <div className="footerr footerPhr">

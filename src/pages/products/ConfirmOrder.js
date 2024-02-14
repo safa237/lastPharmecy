@@ -98,6 +98,7 @@ function ConfirmOrder() {
         {
           headers: {
             'Authorization': `Bearer ${bearerToken}`,
+            'Accept-Language': language,
           },
         }
       );
@@ -121,6 +122,7 @@ function ConfirmOrder() {
         {
           headers: {
             'Authorization': `Bearer ${bearerToken}`,
+            'Accept-Language': language,
           },
         }
       );
@@ -137,8 +139,10 @@ function ConfirmOrder() {
           console.error("Unknown error:", response.data);
         }
       }
-    } catch (error) {
+      console.log("addressid " , addressId); 
+     } catch (error) {
       console.error("Error submitting form:", error);
+      console.log("addressid " , addressId); 
     }
   };
 
@@ -155,6 +159,7 @@ function ConfirmOrder() {
         {
           headers: {
             'Authorization': `Bearer ${bearerToken}`,
+            'Accept-Language': language,
           },
         }
       );
@@ -191,6 +196,7 @@ function ConfirmOrder() {
         {
           headers: {
             'Authorization': `Bearer ${bearerToken}`,
+            'Accept-Language': language,
           },
         }
       );
@@ -208,6 +214,7 @@ function ConfirmOrder() {
         {
           headers: {
             'Authorization': `Bearer ${bearerToken}`,
+            'Accept-Language': language,
           },
         }
       );

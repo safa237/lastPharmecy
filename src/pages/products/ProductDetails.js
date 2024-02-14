@@ -143,14 +143,16 @@ const [detailsOpen, setDetailsOpen] = useState(false);
 
 
 
-const [masterImage, setMasterImage] = useState(
-  "https://via.placeholder.com/200x200.png?text=Master+Image"
-);
+const [masterImage, setMasterImage] = useState(null);
+const [smallImages, setSmallImages] = useState([]);
+useEffect(() => {
+  if (productDetails) {
+    setMasterImage(productDetails.pictures[0]);
+    setSmallImages(productDetails.pictures.slice(0));
+  }
+}, [productDetails]);
 
-
-
-const handleImageClick = (e, src) => {
-  e.preventDefault();
+const handleImageClick = (src) => {
   setMasterImage(src);
 };
 
@@ -225,23 +227,20 @@ useEffect(() => {
               
             </div>
             <div className="detailsfleximg">
-            <div className="detailsIMG">
-            
-            {productDetails ? (
-        <div>
-          <div className="image-container">
-            {productDetails.pictures.map((pictureUrl, index) => (
-              <div className="imgdiv"><img key={index} src={pictureUrl} alt={`productDetails ${index}`} /></div>
-            ))}
+        <div className="detailsIMG">
+          <div className="master-img">
+            {masterImage && <img src={masterImage} alt="Master" />}
           </div>
+          <div className="small-images-container">
+  {smallImages.map((smallImg, index) => (
+    <div key={index} className="small-img" onClick={() => handleImageClick(smallImg)}>
+      <img src={smallImg} alt={`Small ${index}`} />
+    </div>
+  ))}
+</div>
         </div>
-      ) : (
-        <p>Loading...</p>
-      )}
-            
 
-            </div>
-            <div className="detailsINFO">
+        <div className="detailsINFO">
               <h1>{translations[language]?.productdet} </h1>
               <p>
               <div
@@ -250,7 +249,8 @@ useEffect(() => {
   />
               </p>
             </div>
-            </div>
+        </div>
+
             </div>
           </div>
           <div className="productFooter">

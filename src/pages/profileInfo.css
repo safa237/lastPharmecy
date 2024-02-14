@@ -39,7 +39,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    border-left: 2px solid #ccc;
+    background-color: #3EBF87;
+    border-radius: 15px;
 }
 
 /* Additional style to center content inside .imgInfo */
@@ -142,3 +143,23 @@
     }
     
 }
+
+
+.userdetailsInfo {
+    font-size: 1.5rem;
+  }
+  
+  .userDetail {
+    font-size: 1.2rem;
+    margin-bottom: 10px;
+    margin-top: 15px;
+    color: white;
+  }
+  .saveedit{
+    color: #3EBF87;
+    margin-bottom: 15px;
+    background-color: white;
+    width: 90px;
+    height: 50px;
+    border-radius: 15px;
+  }
