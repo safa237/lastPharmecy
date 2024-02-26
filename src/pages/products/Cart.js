@@ -22,6 +22,7 @@ import email from "../../images/Email icon.png"
 import address from "../../images/Location icon.png";
 import phone from "../../images/phone icon.png";
 import Footer from "../../components/Footer";
+import { baseUrl } from "../../rtk/slices/Product-slice";
 
 function Cart() {
   const dispatch = useDispatch();
@@ -89,7 +90,7 @@ const handleDecrement = async (productId) => {
 const updateCartQuantity = async (productId, quantity) => {
   try {
     await axios.put(
-      'http://195.35.28.106:8080/api/v1/user/cart/update',
+      `${baseUrl}/user/cart/update`,
       { productId, quantity },
       {
         headers: {
@@ -154,7 +155,7 @@ const updateCartQuantity = async (productId, quantity) => {
 
   const fetchUserCart = async () => {
     try {
-      const response = await axios.get('http://195.35.28.106:8080/api/v1/user/cart/my', {
+      const response = await axios.get(`${baseUrl}/user/cart/my`, {
         headers: {
           'Authorization': `Bearer ${bearerToken}`,
           'Accept-Language': language,
@@ -178,7 +179,7 @@ const updateCartQuantity = async (productId, quantity) => {
   
   const handleDeleteItem = async (productId) => {
     try {
-      await axios.delete(`http://195.35.28.106:8080/api/v1/user/cart/remove/${productId}`, {
+      await axios.delete(`${baseUrl}/user/cart/remove/${productId}`, {
         headers: {
           Authorization: `Bearer ${bearerToken}`,
           'Accept-Language': language,
@@ -235,7 +236,7 @@ const updateCartQuantity = async (productId, quantity) => {
         await handleDeleteFromWishlist(productId);
       } else {
         const response = await axios.put(
-          `http://195.35.28.106:8080/api/v1/user/wishlist/add/${productId}`,
+          `${baseUrl}/user/wishlist/add/${productId}`,
           {},
           {
             headers: {
@@ -256,7 +257,7 @@ const updateCartQuantity = async (productId, quantity) => {
   const handleDeleteFromWishlist = async (productId) => {
     try {
       await axios.delete(
-        `http://195.35.28.106:8080/api/v1/user/wishlist/remove/${productId}`,
+        `${baseUrl}/user/wishlist/remove/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${bearerToken}`,
@@ -273,7 +274,7 @@ const updateCartQuantity = async (productId, quantity) => {
   const fetchUserFavourite = async () => {
   
     try {
-      const response = await axios.get('http://195.35.28.106:8080/api/v1/user/wishlist/my', {
+      const response = await axios.get(`${baseUrl}/user/wishlist/my`, {
         headers: {
           Authorization: `Bearer ${bearerToken}`,
           "Content-Type": "application/json",
@@ -320,7 +321,7 @@ const updateCartQuantity = async (productId, quantity) => {
   
     try {
       const response = await axios.put(
-        'http://195.35.28.106:8080/api/v1/user/cart/update',
+        `${baseUrl}/user/cart/update`,
         cartItem,
         {
           headers: {

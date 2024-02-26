@@ -1,5 +1,6 @@
 import { createSlice, createAction, createAsyncThunk } from "@reduxjs/toolkit";
 import axios from "axios";
+import { baseUrl } from "./Product-slice";
 
 const localStorageKey = "cartSlice";
 const loadCartFromStorage = () => {
@@ -17,7 +18,7 @@ export const fetchCart = createAsyncThunk("cartSlice/fetchCart", async (bearerTo
   //   "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ1c2VyLjFAZ21haWwuY29tIiwiaWF0IjoxNzA3MzY3MjM1LCJleHAiOjE3MDc0NTM2MzV9.KGFlNVT3_QKmI6fpbxawDvBVUXB_WVvUmIOiVsBRxQY";
 
   const response = await axios.get(
-    "http://195.35.28.106:8080/api/v1/user/cart/my",
+    `${baseUrl}/user/cart/my`,
     {
       headers: {
         Authorization: `Bearer ${bearerToken}`,

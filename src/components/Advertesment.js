@@ -6,6 +6,7 @@ import 'slick-carousel/slick/slick-theme.css';
 import { selectLanguage , selectTranslations , setLanguage } from '../rtk/slices/Translate-slice';
 import { useSelector } from 'react-redux';
 import './advertesment.css';
+import { baseUrl } from '../rtk/slices/Product-slice';
 
 const ImageSlider = () => {
   const settings = {
@@ -29,7 +30,7 @@ const ImageSlider = () => {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://195.35.28.106:8080/api/v1/public/advertisement/all', {
+        const response = await axios.get(`${baseUrl}/public/advertisement/all`, {
           headers: {
             'Accept-Language': language,
           }

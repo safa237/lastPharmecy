@@ -23,6 +23,7 @@ import { FaSearch } from 'react-icons/fa';
 import { selectToken } from '../rtk/slices/Auth-slice';
 import WhatsAppIcon from '../components/Whatsapp';
 import Footer from '../components/Footer';
+import { baseUrl } from '../rtk/slices/Product-slice';
 
 function Blog() {
   const navigate = useNavigate();
@@ -68,7 +69,7 @@ function Blog() {
   useEffect(() => {
     const fetchBlogs = async () => {
       try {
-        const response = await axios.get('http://195.35.28.106:8080/api/v1/public/post/all' ,
+        const response = await axios.get(`${baseUrl}/public/post/all` ,
         {
           headers: {
             'Accept-Language': language,
@@ -90,7 +91,7 @@ function Blog() {
   
   const handleBlogClick = async (clickedBlog) => { 
     try {                              
-      const response = await axios.get(`http://195.35.28.106:8080/api/v1/public/post/${clickedBlog.blogPostId}`,
+      const response = await axios.get(`${baseUrl}/public/post/${clickedBlog.blogPostId}`,
       {
         headers: {
           'Accept-Language': language,

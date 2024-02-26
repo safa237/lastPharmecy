@@ -16,7 +16,7 @@ import email from "../images/Email icon.png";
 import address from "../images/Location icon.png";
 import phone from "../images/phone icon.png";
 import { Link } from "react-router-dom";
-
+import { baseUrl } from '../rtk/slices/Product-slice';
 
 function ChangePassword() {
   const dispatch = useDispatch();
@@ -36,7 +36,7 @@ function ChangePassword() {
   
   const handleSaveClick = async () => {
     try {
-      const apiUrl = 'http://195.35.28.106:8080/api/v1/user/password/update';
+      const apiUrl = `${baseUrl}/user/password/update`;
 
       const headers = {
         'Authorization': `Bearer ${bearerToken}`,

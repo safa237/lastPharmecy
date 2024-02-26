@@ -278,6 +278,7 @@ import address from "../images/Location icon.png";
 import phonee from "../images/phone icon.png";
 import Footer from '../components/Footer';
 import './profileInfo.css';
+import { baseUrl } from '../rtk/slices/Product-slice';
 
 function UserProfile() {
   const [userData, setUserData] = useState(null);
@@ -293,7 +294,7 @@ function UserProfile() {
   useEffect(() => {
     const fetchUserData = async () => {
       try {
-        const response = await axios.get('http://195.35.28.106:8080/api/v1/user/profile', {
+        const response = await axios.get(`${baseUrl}/user/profile`, {
           headers: {
             'Authorization': `Bearer ${bearerToken}`,
             'Accept-Language': language,
@@ -316,7 +317,7 @@ function UserProfile() {
 
   const handleSave = async () => {
     try {
-      await axios.put('http://195.35.28.106:8080/api/v1/user/update', {
+      await axios.put(`${baseUrl}/user/update`, {
         email,
         phone,
       }, {

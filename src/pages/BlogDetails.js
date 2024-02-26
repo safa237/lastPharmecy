@@ -18,6 +18,7 @@ import { AiOutlineDislike } from "react-icons/ai";
 import { Modal , Button } from 'react-bootstrap';
 import WhatsAppIcon from "../components/Whatsapp";
 import Footer from "../components/Footer";
+import { baseUrl } from "../rtk/slices/Product-slice";
 
 function BlogDetails() {
 
@@ -43,7 +44,7 @@ function BlogDetails() {
   useEffect(() => {
     const fetchBlogDetails = async () => {
       try {
-        const response = await fetch(`http://195.35.28.106:8080/api/v1/public/post/${blogId}`,
+        const response = await fetch(`${baseUrl}/public/post/${blogId}`,
         {headers: {
           'Authorization': `Bearer ${bearerToken}`,
           'Content-Type': 'application/json',
@@ -114,7 +115,7 @@ function BlogDetails() {
       } else {
        
         await axios.put(
-          `http://195.35.28.106:8080/api/v1/user/like/${blogPostId}`,
+          `${baseUrl}/user/like/${blogPostId}`,
           {},
           {
             headers: {
@@ -140,7 +141,7 @@ function BlogDetails() {
         setShowModal(true);
         return;
       }
-      await axios.delete(`http://195.35.28.106:8080/api/v1/user/unlike/${blogPostId}`, {
+      await axios.delete(`${baseUrl}/user/unlike/${blogPostId}`, {
         headers: {
           Authorization: `Bearer ${bearerToken}`,
             'Accept-Language': language,
@@ -165,7 +166,7 @@ function BlogDetails() {
       }
 
       await axios.put(
-        `http://195.35.28.106:8080/api/v1/user/dislike/${postId}`,
+        `${baseUrl}/user/dislike/${postId}`,
         {},
         {
           headers: {

@@ -8,7 +8,7 @@ import { selectToken } from '../../rtk/slices/Auth-slice';
 import { setToken } from '../../rtk/slices/Auth-slice';
 import { setEmail } from '../../rtk/slices/Auth-slice';
 import { useEffect } from 'react';
-
+import { baseUrl } from '../../rtk/slices/Product-slice';
 import './sign.css';
 
 /*const SignInForm = () => {
@@ -317,7 +317,7 @@ const SignInForm = () => {
     };
 
     axios
-      .post('http://195.35.28.106:8080/api/v1/auth/login', requestBody, {
+      .post(`${baseUrl}/auth/login`, requestBody, {
         headers: {
           'Content-Type': 'application/json',
           'Accept-Language': language,

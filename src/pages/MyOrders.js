@@ -18,6 +18,7 @@ import address from "../images/Location icon.png";
 import phone from "../images/phone icon.png";
 import { Link } from "react-router-dom";
 import Footer from "../components/Footer";
+import { baseUrl } from "../rtk/slices/Product-slice";
 
 function MyOrders() {
   const dispatch = useDispatch();
@@ -36,7 +37,7 @@ function MyOrders() {
   const getAllOrders = async () => {
     try {
       const response = await axios.get(
-        "http://195.35.28.106:8080/api/v1/user/order/all",
+        `${baseUrl}/user/order/all`,
         {
           headers: {
             'Authorization': `Bearer ${bearerToken}`,

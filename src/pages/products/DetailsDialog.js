@@ -10,6 +10,7 @@ import axios from 'axios';
 import { useSelector } from 'react-redux';
 import { Modal , Button } from 'react-bootstrap';
 import './detailsDialog.css';
+import { baseUrl } from '../../rtk/slices/Product-slice';
 
 const DetailsDialog = ({ isOpen, onCancel, product , rating}) => {
   const dispatch = useDispatch();
@@ -57,7 +58,7 @@ const handleCloseModal = () => setShowModal(false);
   
     try {
       const response = await axios.put(
-        'http://195.35.28.106:8080/api/v1/user/cart/update',
+        `${baseUrl}/user/cart/update`,
         cartItem,
         {
           headers: {

@@ -50,6 +50,7 @@ export default Slider;*/
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './slider.css';
+import { baseUrl } from '../../rtk/slices/Product-slice';
 
 function Slider() {
   const [images, setImages] = useState([]);
@@ -57,7 +58,7 @@ function Slider() {
   useEffect(() => {
     const fetchImages = async () => {
       try {
-        const response = await axios.get('http://195.35.28.106:8080/api/v1/public/advertisement/all', {
+        const response = await axios.get(`${baseUrl}/public/advertisement/all`, {
           headers: {
             'Accept-Language': 'fr'
           }

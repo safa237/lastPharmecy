@@ -38,6 +38,7 @@ import './store.css';
 import WhatsAppIcon from '../components/Whatsapp';
 import Dropdown from "react-bootstrap/Dropdown";
 import Footer from '../components/Footer';
+import { baseUrl } from '../rtk/slices/Product-slice';
 
 function Store  ()  {
   const dispatch = useDispatch();
@@ -101,7 +102,7 @@ function Store  ()  {
       } else {
         
         await axios.put(
-          `http://195.35.28.106:8080/api/v1/user/wishlist/add/${productId}`,
+          `${baseUrl}/user/wishlist/add/${productId}`,
           {},
           {
             headers: {
@@ -119,7 +120,7 @@ function Store  ()  {
   
   const handleDeleteFromWishlist = async (productId) => {
     try {
-      await axios.delete(`http://195.35.28.106:8080/api/v1/user/wishlist/remove/${productId}`, {
+      await axios.delete(`${baseUrl}/user/wishlist/remove/${productId}`, {
         headers: {
           Authorization: `Bearer ${bearerToken}`,
           'Accept-Language': language,
@@ -134,7 +135,7 @@ function Store  ()  {
   const fetchUserFavourite = async () => {
     try {
       const language = 'en';
-      const response = await axios.get('http://195.35.28.106:8080/api/v1/user/wishlist/my', {
+      const response = await axios.get(`${baseUrl}/user/wishlist/my`, {
         headers: {
           Authorization: `Bearer ${bearerToken}`,
           'Accept-Language': language,
@@ -228,7 +229,7 @@ function Store  ()  {
   
     try {
       const response = await axios.put(
-        'http://195.35.28.106:8080/api/v1/user/cart/update',
+        `${baseUrl}/user/cart/update`,
         cartItem,
         {
           headers: {
@@ -283,10 +284,10 @@ function Store  ()  {
       let url;
       if (categoryId === null) {
         // If categoryId is null, fetch all products
-        url = 'http://195.35.28.106:8080/api/v1/public/product/all';
+        url = `${baseUrl}/public/product/all`;
         setSelectedCategoryId(null); // Set selectedCategoryId to null
       } else {
-        url = `http://195.35.28.106:8080/api/v1/public/category/${categoryId}`;
+        url = `${baseUrl}/public/category/${categoryId}`;
         setSelectedCategoryId(categoryId);
       }
   
@@ -343,7 +344,7 @@ function Store  ()  {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const response = await axios.get('http://195.35.28.106:8080/api/v1/public/category/all', {
+        const response = await axios.get(`${baseUrl}/public/category/all`, {
           headers: {
             'Accept-Language': language,
           },
@@ -457,7 +458,7 @@ function Store  ()  {
   const fetchMianCategory = async () => {
     try {
       const response = await axios.get(
-        "http://195.35.28.106:8080/api/v1/public/main/category/all",
+        `${baseUrl}/public/main/category/all`,
         {
           headers: {
             "Accept-Language": language,
@@ -473,7 +474,7 @@ function Store  ()  {
   const fetchSubCategory = async () => {
     try {
       const response = await axios.get(
-        "http://195.35.28.106:8080/api/v1/public/category/all",
+        `${baseUrl}/public/category/all`,
         {
           headers: {
             "Accept-Language": language,
@@ -492,7 +493,7 @@ function Store  ()  {
   const fetchProductsByMainCat = async (MC) => {
     try {
       const response = await axios.get(
-        `http://195.35.28.106:8080/api/v1/public/product/main/category/${MC}`,
+        `${baseUrl}/public/product/main/category/${MC}`,
         {
           headers: {
             "Accept-Language": language,
@@ -511,7 +512,7 @@ function Store  ()  {
   const fetchProductsBySubCat = async (MC) => {
     try {
       const response = await axios.get(
-        `http://195.35.28.106:8080/api/v1/public/product/category/${MC}`,
+        `${baseUrl}/public/product/category/${MC}`,
         {
           headers: {
             "Accept-Language": language,

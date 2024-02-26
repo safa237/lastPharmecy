@@ -148,6 +148,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setLanguage, selectLanguage, selectTranslations } from '../../rtk/slices/Translate-slice';
 import './sign.css';
 import { setToken } from '../../rtk/slices/Auth-slice';
+import { baseUrl } from '../../rtk/slices/Product-slice';
 
 const SignUpForm = ({ showPassword, handleTogglePasswordVisibility }) => {
   const dispatch = useDispatch();
@@ -170,7 +171,7 @@ const SignUpForm = ({ showPassword, handleTogglePasswordVisibility }) => {
   };
 
   const handleRegister = () => {
-    axios.post('http://195.35.28.106:8080/api/v1/auth/register', formData, {
+    axios.post(`${baseUrl}/auth/register`, formData, {
       headers: {
         'Content-Type': 'application/json',
         'Accept-Language': language,

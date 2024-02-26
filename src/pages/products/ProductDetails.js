@@ -17,7 +17,7 @@ import axios from "axios";
 import { selectLanguage , selectTranslations} from "../../rtk/slices/Translate-slice";
 import { Editor } from '@tinymce/tinymce-react';
 import './ProductDetails.css';
-
+import { baseUrl } from "../../rtk/slices/Product-slice";
 
 function ProductDetails() {
   const navigate = useNavigate();
@@ -43,7 +43,7 @@ function ProductDetails() {
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
-        const response = await fetch(`http://195.35.28.106:8080/api/v1/public/product/${productId}`, {
+        const response = await fetch(`${baseUrl}/public/product/${productId}`, {
           headers: {
             
             'Accept-Language': language,
@@ -106,7 +106,7 @@ function ProductDetails() {
 
     try {
       const response = await axios.put(
-        'http://195.35.28.106:8080/api/v1/user/cart/update',
+        `${baseUrl}/user/cart/update`,
         cartItem,
         {
           headers: {
@@ -216,7 +216,7 @@ useEffect(() => {
 
                
               </div>
-              <h1 style={{marginTop:'15px'}}>{translations[language]?.aboutpro} </h1>
+              {/*<h1 style={{marginTop:'15px'}}>{translations[language]?.aboutpro} </h1>*/}
               <p style={{width: '100%' , wordWrap: 'break-word'}}>
               <div
     className="product-details-content"
@@ -241,7 +241,7 @@ useEffect(() => {
         </div>
 
         <div className="detailsINFO">
-              <h1>{translations[language]?.productdet} </h1>
+              {/*<h1>{translations[language]?.productdet} </h1>*/}
               <p>
               <div
     className="product-details-content"

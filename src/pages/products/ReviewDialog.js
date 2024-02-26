@@ -317,6 +317,7 @@ import { Modal , Button } from 'react-bootstrap';
 import { CiEdit } from "react-icons/ci";
 import { MdDeleteOutline } from "react-icons/md";
 import './review.css';
+import { baseUrl } from '../../rtk/slices/Product-slice';
 
 
   const ReviewDialog = ({ isOpen, onCancel, productId }) => {
@@ -352,7 +353,7 @@ import './review.css';
     const fetchReviews = async () => {
       try {
         const response = await axios.get(
-          `http://195.35.28.106:8080/api/v1/public/review/product/${productId}`,
+          `${baseUrl}/public/review/product/${productId}`,
           {
             headers: {
               'Authorization': `Bearer ${bearerToken}`,
@@ -386,7 +387,7 @@ import './review.css';
   
     const handleSubmit = async (e) => {
       e.preventDefault();
-      const apiUrl = 'http://195.35.28.106:8080/api/v1/user/review/new';
+      const apiUrl = `${baseUrl}/user/review/new`;
       const requestBody = {
         productId: productId,
         comment: formData.comment,
@@ -437,7 +438,7 @@ import './review.css';
   
     const handleSaveClick = async (reviewId) => {
       try {
-        const apiUrl = `http://195.35.28.106:8080/api/v1/user/review/update/${reviewId}`;
+        const apiUrl = `${baseUrl}/user/review/update/${reviewId}`;
         const requestBody = {
           comment: updatedComment,
           rating: rating,
@@ -464,7 +465,7 @@ import './review.css';
 
     const handleDeleteClick = async (reviewId) => {
       try {
-        const apiUrl = `http://195.35.28.106:8080/api/v1/user/review/delete/${reviewId}`;
+        const apiUrl = `${baseUrl}/user/review/delete/${reviewId}`;
         
         const response = await axios.delete(apiUrl, {
           headers: {

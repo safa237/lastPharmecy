@@ -26,6 +26,7 @@ import email from "../../images/Email icon.png"
 import addresss from "../../images/Location icon.png";
 import phone from "../../images/phone icon.png";
 import Footer from "../../components/Footer";
+import { baseUrl } from "../../rtk/slices/Product-slice";
 
 function ConfirmOrder() {
   const navigate = useNavigate();
@@ -95,7 +96,7 @@ function ConfirmOrder() {
   const fetchUserAddresses = async () => {
     try {
       const response = await axios.get(
-        "http://195.35.28.106:8080/api/v1/user/address/all",
+        `${baseUrl}/user/address/all`,
         {
           headers: {
             'Authorization': `Bearer ${bearerToken}`,
@@ -118,7 +119,7 @@ function ConfirmOrder() {
   const createOrder = async (addressId) => {
     try {
       const response = await axios.post(
-        `http://195.35.28.106:8080/api/v1/user/order/cart/on/${addressId}`,
+        `${baseUrl}/user/order/cart/on/${addressId}`,
         {},
         {
           headers: {
@@ -155,7 +156,7 @@ function ConfirmOrder() {
   const addNewAddress = async () => {
     try {
       const response = await axios.post(
-        "http://195.35.28.106:8080/api/v1/user/address/new",
+        `${baseUrl}/user/address/new`,
         newAddress,
         {
           headers: {
@@ -193,7 +194,7 @@ function ConfirmOrder() {
   const handleDeleteAddress = async (addressId) => {
     try {
       const response = await axios.delete(
-        `http://195.35.28.106:8080/api/v1/user/address/delete/${addressId}`,
+        `${baseUrl}/user/address/delete/${addressId}`,
         {
           headers: {
             'Authorization': `Bearer ${bearerToken}`,
@@ -211,7 +212,7 @@ function ConfirmOrder() {
   const getCounries = async () => {
     try {
       const response = await axios.get(
-        "http://195.35.28.106:8080/api/v1/public/country/all",
+        `${baseUrl}/public/country/all`,
         {
           headers: {
             'Authorization': `Bearer ${bearerToken}`,

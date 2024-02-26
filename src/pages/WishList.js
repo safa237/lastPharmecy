@@ -18,6 +18,7 @@ import address from "../images/Location icon.png";
 import phone from "../images/phone icon.png";
 import { setLanguage , selectTranslations , selectLanguage} from '../rtk/slices/Translate-slice';
 import Footer from '../components/Footer';
+import { baseUrl } from '../rtk/slices/Product-slice';
 
 
 function Wishlist() {
@@ -57,7 +58,7 @@ function Wishlist() {
       
   
       const response = await axios.get(
-        "http://195.35.28.106:8080/api/v1/user/wishlist/my",
+        `${baseUrl}/user/wishlist/my`,
         {
           headers: {
             Authorization: `Bearer ${bearerToken}`,
@@ -82,7 +83,7 @@ function Wishlist() {
 
   const handleDeleteFromWishlist = async (productId) => {
     try {
-      await axios.delete(`http://195.35.28.106:8080/api/v1/user/wishlist/remove/${productId}`, {
+      await axios.delete(`${baseUrl}/user/wishlist/remove/${productId}`, {
         headers: {
           Authorization: `Bearer ${bearerToken}`,
           'Accept-Language': language,
@@ -105,7 +106,7 @@ function Wishlist() {
   
     try {
       const response = await axios.put(
-        'http://195.35.28.106:8080/api/v1/user/cart/update',
+        `${baseUrl}/user/cart/update`,
         cartItem,
         {
           headers: {

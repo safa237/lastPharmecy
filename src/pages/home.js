@@ -56,6 +56,7 @@ import WhatsAppIcon from "../components/Whatsapp";
 import Dropdown from "react-bootstrap/Dropdown";
 import Advertesment from "../components/Advertesment";
 import Footer from "../components/Footer";
+import { baseUrl } from "../rtk/slices/Product-slice";
 
 
 function Home() {
@@ -125,7 +126,7 @@ function Home() {
         await handleDeleteFromWishlist(productId);
       } else {
         const response = await axios.put(
-          `http://195.35.28.106:8080/api/v1/user/wishlist/add/${productId}`,
+          `${baseUrl}/user/wishlist/add/${productId}`,
           {},
           {
             headers: {
@@ -146,7 +147,7 @@ function Home() {
   const handleDeleteFromWishlist = async (productId) => {
     try {
       await axios.delete(
-        `http://195.35.28.106:8080/api/v1/user/wishlist/remove/${productId}`,
+        `${baseUrl}/user/wishlist/remove/${productId}`,
         {
           headers: {
             Authorization: `Bearer ${bearerToken}`,
@@ -163,7 +164,7 @@ function Home() {
   const fetchUserFavourite = async () => {
     try {
       const response = await axios.get(
-        "http://195.35.28.106:8080/api/v1/user/wishlist/my",
+        `${baseUrl}/user/wishlist/my`,
         {
           headers: {
             Authorization: `Bearer ${bearerToken}`,
@@ -205,7 +206,7 @@ function Home() {
 
     try {
       const response = await axios.put(
-        "http://195.35.28.106:8080/api/v1/user/cart/update",
+        `${baseUrl}/user/cart/update`,
         cartItem,
         {
           headers: {
@@ -278,7 +279,7 @@ function Home() {
   const fetchMianCategory = async () => {
     try {
       const response = await axios.get(
-        "http://195.35.28.106:8080/api/v1/public/main/category/all",
+        `${baseUrl}/public/main/category/all`,
         {
           headers: {
             "Accept-Language": language,
@@ -294,7 +295,7 @@ function Home() {
   const fetchSubCategory = async () => {
     try {
       const response = await axios.get(
-        "http://195.35.28.106:8080/api/v1/public/category/all",
+        `${baseUrl}/public/category/all`,
         {
           headers: {
             "Accept-Language": language,
@@ -313,7 +314,7 @@ function Home() {
   const fetchProductsByMainCat = async (MC) => {
     try {
       const response = await axios.get(
-        `http://195.35.28.106:8080/api/v1/public/product/main/category/${MC}`,
+        `${baseUrl}/public/product/main/category/${MC}`,
         {
           headers: {
             "Accept-Language": language,
@@ -332,7 +333,7 @@ function Home() {
   const fetchProductsBySubCat = async (MC) => {
     try {
       const response = await axios.get(
-        `http://195.35.28.106:8080/api/v1/public/product/category/${MC}`,
+        `${baseUrl}/public/product/category/${MC}`,
         {
           headers: {
             "Accept-Language": language,

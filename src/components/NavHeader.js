@@ -27,6 +27,7 @@ import SidebarUser from "./SidebarUser";
 import { clearWishlist } from "../rtk/slices/Wishlist-slice";
 import { IoIosNotificationsOutline } from "react-icons/io";
 import { selectToken } from "../rtk/slices/Auth-slice";
+import { baseUrl } from "../rtk/slices/Product-slice";
 
 function NavHeader({ userId, handleProductClick, cartunmber }) {
   const dispatch = useDispatch();
@@ -64,7 +65,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
     const fetchCategories = async () => {
       try {
         const response = await axios.get(
-          "http://195.35.28.106:8080/api/v1/public/category/all",
+          `${baseUrl}/public/category/all`,
           {
             headers: {
               "Accept-Language": language,
@@ -222,7 +223,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   const fetchNotifications = async () => {
     try {
       const response = await axios.get(
-        "http://195.35.28.106:8080/api/v1/user/notifications",
+        `${baseUrl}/profile/notifications`,
         {
           headers: {
             Authorization: `Bearer ${bearerToken}`,
@@ -241,7 +242,7 @@ function NavHeader({ userId, handleProductClick, cartunmber }) {
   const fetchUserCart = async () => {
     try {
       const response = await axios.get(
-        "http://195.35.28.106:8080/api/v1/user/cart/my",
+        `${baseUrl}/user/cart/my`,
         {
           headers: {
             Authorization: `Bearer ${bearerToken}`,
